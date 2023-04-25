@@ -1,0 +1,5 @@
+torch==2.0.0
+numpy==1.23.0
+torchvision==0.15.1
+easydict==1.10
+PyYAML==6.0

@@ -1,0 +1,5 @@
+# train options
+train:
+    labels_path: 'data\DIV2K_train_HR'
+    batch_size: 4
+    
