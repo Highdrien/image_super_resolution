@@ -41,6 +41,7 @@ To run the code you need python (I use python 3.9.13) and packages in the follow
 - torchvision==0.15.1
 - easydict==1.10
 - PyYAML==6.0
+- matplotlib==3.6.2
 
 You can run the following code to install all packages in the correct versions:
 ```bash
