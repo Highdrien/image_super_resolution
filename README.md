@@ -13,11 +13,23 @@ The first step in this project is to retrieve the dataset. We suggest using the 
 
 In the `data` folder, you will find all the images used in the training. It contains:
 - `DIV2K_train_HR`: folder containing all the training images in high definition (2K)
-- `DIV2K_valid_HR`: folder containing all the validation images in high definition (2K)
+- `DIV2K_train_LR_bicubic`: corresponding low resolution images obtained using Matlab imresize function with default settings (bicubic interpolation), which containts:
+  - `X2`: LR images, downscale factor 2
+  - `X3`: LR images, downscale factor 3
+  - `X4`: LR images, downscale factor 4
+and the same for valid (validation data)
 
-I haven't put the other files in yet.
-
-These data will not on github, you have to download it in this website: https://data.vision.ee.ethz.ch/cvl/DIV2K/
+These data will not on github, visit this website: https://data.vision.ee.ethz.ch/cvl/DIV2K/ and download the following folders:
+(NTIRE 2017) Low Res Images:
+- Train Data Track 1 bicubic downscaling x2 (LR images)
+- Validation Data Track 1 bicubic downscaling x2 (LR images)
+- Train Data Track 1 bicubic downscaling x3 (LR images)
+- Validation Data Track 1 bicubic downscaling x3 (LR images)
+- Train Data Track 1 bicubic downscaling x4 (LR images)
+- Validation Data Track 1 bicubic downscaling x4 (LR images)
+High Resolution Images:
+- Train Data (HR images)
+- Validation Data (HR images)
 
 
 # Requirements

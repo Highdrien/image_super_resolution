@@ -1,5 +1,9 @@
 # train options
 train:
-    labels_path: 'data\DIV2K_train_HR'
+    path:
+        HR: 'data\DIV2K_train_HR'
+        X2: 'data\DIV2K_train_LR_bicubic\X2'
+        X3: 'data\DIV2K_train_LR_bicubic\X3'
+        X4: 'data\DIV2K_train_LR_bicubic\X4'
     batch_size: 4
     
