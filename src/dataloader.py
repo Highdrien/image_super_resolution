@@ -1,78 +1,64 @@
 import os
-import numpy as np
-import matplotlib.pyplot as plt
 
 import torch
-import torchvision
 from torchvision.io import read_image
 from torch.utils.data import Dataset, DataLoader
 
-np.random.seed(0)
+torch.manual_seed(0)
 
 
 class DataGenerator(Dataset):
-    def __init__(self, config, mode, upscale_factor):
+    def __init__(self, config, mode):
+        if mode not in ['train','val', 'test']:
+            print('invalid mode')
+            exit()
+
         self.mode = mode
-        self.upscale_factor = upscale_factor
+        self.upscale_factor = config.upscale_factor
+        self.normalisation = config.model.data_normalisation
 
         # path to datas
         self.HR_path = config[mode].path.HR
-        self.LR_path = config[mode].path['X' + str(upscale_factor)]
+        self.LR_path = config[mode].path['X' + str(self.upscale_factor)]
 
         # end of images name
         self.HR_end = '.png'
-        self.LR_end = 'x' + str(upscale_factor) + '.png'
+        self.LR_end = 'x' + str(self.upscale_factor) + '.png'
+
+        self.length = len(os.listdir(self.HR_path))
 
     def __len__(self):
         """
         Denotes the number of batches per epoch
         """
-        return len(self.labels_path)
+        return self.length
 
     def __getitem__(self, index):
         """
-        get the hr (high resolution), x2, x3, x4 from a image number (index)
+        get the hr (high resolution) and the lr (low resolution) from a image number (index)
         """
-        image_name = str(index + 1).zfill(4)    # to convert xxx to '0xxx', xx to '00xx', x to '000x'
+        image_name = find_image_name(index, self.mode)
 
         hr_image = read_image(os.path.join(self.HR_path, image_name + self.HR_end))
         lr_image = read_image(os.path.join(self.LR_path, image_name + self.LR_end))
+        
+        if self.normalisation:
+            lr_image = lr_image / 255
+            hr_image = hr_image / 255
 
-        return hr_image, lr_image
-
-
-def plot_getitem(images):
-    fig, axes = plt.subplots(1, 2)
-    for i in range(2):
-        image = images[i]
-        image = np.moveaxis(image.numpy(), 0, -1)
-        axes[i].imshow(image)
-
-    plt.show()
+        return lr_image, hr_image
 
 
-def plot_getitem_with_zoom(images, zoom, upscale_factor):
-    _, axes = plt.subplots(2, 2)
-    titles = ["HR image", "upscale: "+str(upscale_factor), "zoom x"+str(zoom), "zoom x"+str(zoom)]
-    for i in range(2):
-        image = images[i]
-        image = np.moveaxis(image.numpy(), 0, -1)
-        axes[0, i].imshow(image)
-        axes[0, i].set_title(titles[i], y=-0.3)
-        w, h = image.shape[:-1]
-        zoom_image = image[w//2:w//2+w//zoom, h//2:h//2+h//zoom, :]
-        axes[1, i].imshow(zoom_image)
-        axes[1, i].set_title(titles[2 + i], y=-0.3)
-
-    plt.show()
+def find_image_name(index, mode):
+    if mode == 'val':
+        index += 800
+    return str(index + 1).zfill(4)    # to convert xxx to '0xxx', xx to '00xx', x to '000x'
 
 
 def create_generator(config, mode):
-    """Returns generator from a config and mode ('train','val','test')"""
-    upscale_factor = 4
-    train_generator = DataGenerator(config, mode, upscale_factor)
-    images = train_generator.__getitem__(2)
-    # plot_getitem(images)
-    plot_getitem_with_zoom(images, 15, upscale_factor)
-
-    # DataLoader(DataGenerator(train_data), batch_size=PARAM.BATCH_SIZE, shuffle=PARAM.SHUFFLE_DATA, drop_last=True)
+    """Returns generator from a config and a mode ('train','val','test')"""
+    generator = DataGenerator(config, mode)
+    return DataLoader(generator, 
+                      batch_size=config.train.batch_size, 
+                      shuffle=config.train.shuffle, 
+                      drop_last=config.train.drop_last)

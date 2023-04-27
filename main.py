@@ -4,6 +4,7 @@ import argparse
 from easydict import EasyDict as edict
 
 from src.dataloader import create_generator
+from src.train import train
 
 
 def load_config(path='configs/config.yaml'):
@@ -16,6 +17,10 @@ def main(options):
         config = load_config(options['config_path'])
         create_generator(config, 'train')
 
+    if options['mode'] == 'train':
+        config = load_config(options['config_path'])
+        train(config)
+    
     else:
         print('ERROR')
         exit()
