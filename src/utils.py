@@ -67,4 +67,4 @@ def get_result(path):
     return result, names
 
 if __name__ == "__main__":
-    save_learning_curves('../logs/experiment_2')
+    save_learning_curves('../logs/experiment_0')

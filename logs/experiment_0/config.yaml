@@ -1,0 +1,43 @@
+config_metadata: 'Saving time : 04/27/2023, 19:28:39'
+name: 'experiment'
+upscale_factor: 3
+
+# model options
+model:
+    hidden_channels_1: 64
+    hidden_channels_2: 32
+    loss: 'MSE'
+    optimizer: 'adam'
+    learning_rate: 0.1
+    data_normalisation: true
+
+# train options
+train:
+
+# path options
+path:
+    HR: 'data\DIV2K_train_HR'
+    X2: 'data\DIV2K_train_LR_bicubic\X2'
+    X3: 'data\DIV2K_train_LR_bicubic\X3'
+    X4: 'data\DIV2K_train_LR_bicubic\X4'
+    epochs: 30
+    batch_size: 1
+    virtual_batch_size: 16
+    save_learning_curves: true
+    logs_path: 'logs'
+    save_checkpoint: 'all'
+    shuffle: true
+    drop_last: false
+
+# val options
+val:
+
+# path options
+path:
+    HR: 'data\DIV2K_valid_HR'
+    X2: 'data\DIV2K_valid_LR_bicubic\X2'
+    X3: 'data\DIV2K_valid_LR_bicubic\X3'
+    X4: 'data\DIV2K_valid_LR_bicubic\X4'
+    batch_size: 1
+    shuffle: true
+    drop_last: false

@@ -23,7 +23,7 @@ train:
         X3: data\DIV2K_train_LR_bicubic\X3  # path to the train x3 data
         X4: data\DIV2K_train_LR_bicubic\X4  # path to the train x4 data
 
-    epochs: 3                               # number of epochs
+    epochs: 30                              # number of epochs
     batch_size: 1                           # training batch size
     virtual_batch_size: 16                  # size of the virtual batch
     save_learning_curves: true              # save the learning curves
