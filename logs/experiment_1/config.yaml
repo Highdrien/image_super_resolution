@@ -18,31 +18,29 @@ data:
 
 # train options
 train:
-
-# path options
-path:
-        HR: 'DIV2K_train_HR'
-        X2: 'DIV2K_train_LR_bicubic\X2'
-        X3: 'DIV2K_train_LR_bicubic\X3'
-        X4: 'DIV2K_train_LR_bicubic\X4'
-    epochs: 30
-    batch_size: 16
-    virtual_batch_size: 16
-    save_learning_curves: true
-    logs_path: 'logs'
-    save_checkpoint: 'all'
-    shuffle: true
-    drop_last: false
+    # path options
+    path:
+            HR: 'DIV2K_train_HR'
+            X2: 'DIV2K_train_LR_bicubic\X2'
+            X3: 'DIV2K_train_LR_bicubic\X3'
+            X4: 'DIV2K_train_LR_bicubic\X4'
+        epochs: 30
+        batch_size: 16
+        virtual_batch_size: 16
+        save_learning_curves: true
+        logs_path: 'logs'
+        save_checkpoint: 'all'
+        shuffle: true
+        drop_last: false
 
 # val options
 val:
-
-# path options
-path:
-        HR: 'DIV2K_valid_HR'
-        X2: 'DIV2K_valid_LR_bicubic\X2'
-        X3: 'DIV2K_valid_LR_bicubic\X3'
-        X4: 'DIV2K_valid_LR_bicubic\X4'
-    batch_size: 16
-    shuffle: true
-    drop_last: false
+    # path options
+    path:
+            HR: 'DIV2K_valid_HR'
+            X2: 'DIV2K_valid_LR_bicubic\X2'
+            X3: 'DIV2K_valid_LR_bicubic\X3'
+            X4: 'DIV2K_valid_LR_bicubic\X4'
+        batch_size: 16
+        shuffle: true
+        drop_last: false
