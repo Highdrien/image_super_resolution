@@ -11,15 +11,9 @@ The first step in this project is to retrieve the dataset. We suggest using the 
 
 # Data
 
-In the `data` folder, you will find all the images used in the training. It contains:
-- `DIV2K_train_HR`: folder containing all the training images in high definition (2K)
-- `DIV2K_train_LR_bicubic`: corresponding low resolution images obtained using Matlab imresize function with default settings (bicubic interpolation), which containts:
-  - `X2`: LR images, downscale factor 2
-  - `X3`: LR images, downscale factor 3
-  - `X4`: LR images, downscale factor 4
-and the same for valid (validation data)
+## the dataset
 
-These data will not on github, visit this website: https://data.vision.ee.ethz.ch/cvl/DIV2K/ and download the following folders:
+For this project we used images from the DIV2K dataset. if you want them, go to their website: https://data.vision.ee.ethz.ch/cvl/DIV2K/ and download the following folders:
 (NTIRE 2017) Low Res Images:
 - Train Data Track 1 bicubic downscaling x2 (LR images)
 - Validation Data Track 1 bicubic downscaling x2 (LR images)
@@ -32,6 +26,22 @@ High Resolution Images:
 - Validation Data (HR images)
 
 
+## The data is then arranged as follows:
+
+In the `data` folder, you will find all the images used in the training. It contains:
+- `DIV2K`: a folder with the initial images. It contains the following folders:
+  - `DIV2K_train_HR`: folder containing all the training images in high definition (2K)
+  - `DIV2K_train_LR_bicubic`: corresponding low resolution images obtained using Matlab imresize function with default settings (bicubic interpolation), which containts:
+    - `X2`: LR images, downscale factor 2
+    - `X3`: LR images, downscale factor 3
+    - `X4`: LR images, downscale factor 4\
+  and the same for valid (validation data)
+
+- `patches`: which are image patches all of the same size that come from the DIV2K images. To get them, you have to run the code `create_patches.py`.
+- `create_patches.py`: To run it, go to the data folder, and run the code
+
+
+
 # Requirements
 
 To run the code you need python (I use python 3.9.13) and packages in the following versions :
@@ -42,6 +52,7 @@ To run the code you need python (I use python 3.9.13) and packages in the follow
 - easydict==1.10
 - PyYAML==6.0
 - matplotlib==3.6.2
+- tqdm==4.64.1
 
 You can run the following code to install all packages in the correct versions:
 ```bash
@@ -57,3 +68,16 @@ python main.py --mode <mode> --config_path <path to your config>
 
 - `mode`: with the mode, you will choose between to run the code to do a train, a test or a predict.
 -  `config_path`: if you want to train the model, you must specify the parameters used for the training. To do this you need to specify the path to a yaml file which containe all the parameters. If you don't specify it, it will take the file `config.yaml` which is in `config` folder
+
+# Results
+
+we ran several experiments that you can find in the 
+ `logs` file:
+
+- `experiment_0`: training on the original images which are not of the same size and therefore with a batch size of 1
+
+<p align="center"><img src=logs/experiment_0/MSE.png><p>
+
+- `experiment_1`: training with patches (one patch per image)
+
+<p align="center"><img src=logs/experiment_1/MSE.png><p>

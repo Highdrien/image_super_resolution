@@ -3,7 +3,7 @@ import yaml
 import argparse
 from easydict import EasyDict as edict
 
-from src.dataloader import create_generator
+from src.dataloader import getbatch
 from src.train import train
 
 
@@ -15,13 +15,14 @@ def load_config(path='configs/config.yaml'):
 def main(options):
     if options['mode'] == 'data':
         config = load_config(options['config_path'])
-        create_generator(config, 'train')
+        getbatch(config, 'train')
 
-    if options['mode'] == 'train':
+    elif options['mode'] == 'train':
         config = load_config(options['config_path'])
         train(config)
     
     else:
+        print(options['mode'])
         print('ERROR')
         exit()
 

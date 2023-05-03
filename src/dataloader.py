@@ -4,6 +4,8 @@ import torch
 from torchvision.io import read_image
 from torch.utils.data import Dataset, DataLoader
 
+from src.utils import plot_getitem
+
 torch.manual_seed(0)
 
 
@@ -18,8 +20,8 @@ class DataGenerator(Dataset):
         self.normalisation = config.model.data_normalisation
 
         # path to datas
-        self.HR_path = config[mode].path.HR
-        self.LR_path = config[mode].path['X' + str(self.upscale_factor)]
+        self.HR_path = os.path.join(config.data.path, config[mode].path.HR)
+        self.LR_path = os.path.join(config.data.path, config[mode].path['X' + str(self.upscale_factor)])
 
         # end of images name
         self.HR_end = '.png'
@@ -62,3 +64,9 @@ def create_generator(config, mode):
                       batch_size=config.train.batch_size, 
                       shuffle=config.train.shuffle, 
                       drop_last=config.train.drop_last)
+
+
+def getbatch(config, mode):
+    dataloader = create_generator(config, mode)
+    X, Y = next(iter(dataloader))
+    plot_getitem(X, Y, config.upscale_factor, index=0)

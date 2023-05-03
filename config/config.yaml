@@ -15,16 +15,21 @@ model:
     data_normalisation: true                # if true, input:image/255 and predict:output*255
 
 
+# data options
+data:
+    path: data\patches
+    image_size: 120,120
+
 # train options
 train:
     path:
-        HR: data\DIV2K_train_HR             # path to the train HR data
-        X2: data\DIV2K_train_LR_bicubic\X2  # path to the train x2 data
-        X3: data\DIV2K_train_LR_bicubic\X3  # path to the train x3 data
-        X4: data\DIV2K_train_LR_bicubic\X4  # path to the train x4 data
+        HR: DIV2K_train_HR             # path to the train HR data
+        X2: DIV2K_train_LR_bicubic\X2  # path to the train x2 data
+        X3: DIV2K_train_LR_bicubic\X3  # path to the train x3 data
+        X4: DIV2K_train_LR_bicubic\X4  # path to the train x4 data
 
     epochs: 30                              # number of epochs
-    batch_size: 1                           # training batch size
+    batch_size: 16                          # training batch size
     virtual_batch_size: 16                  # size of the virtual batch
     save_learning_curves: true              # save the learning curves
     logs_path: logs                         # path to logs folder
@@ -36,11 +41,11 @@ train:
 # validation options
 val:
     path:
-        HR: data\DIV2K_valid_HR             # path to the valid HR data
-        X2: data\DIV2K_valid_LR_bicubic\X2  # path to the valid x2 data
-        X3: data\DIV2K_valid_LR_bicubic\X3  # path to the valid x3 data
-        X4: data\DIV2K_valid_LR_bicubic\X4  # path to the valid x4 data
+        HR: DIV2K_valid_HR             # path to the valid HR data
+        X2: DIV2K_valid_LR_bicubic\X2  # path to the valid x2 data
+        X3: DIV2K_valid_LR_bicubic\X3  # path to the valid x3 data
+        X4: DIV2K_valid_LR_bicubic\X4  # path to the valid x4 data
 
-    batch_size: 1                           # validation batch size
+    batch_size: 16                          # validation batch size
     shuffle: true                           # shuffle the data at each epoch
     drop_last: false                        # drop the last batch if there dont have a complete batch

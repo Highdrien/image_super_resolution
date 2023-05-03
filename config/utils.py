@@ -49,13 +49,14 @@ def config_to_yaml(config, space=''):
     """
     transforms a dictionary (config) into a yaml line sequence
     """
+    intent = ' ' * 4
     config_str = []
     for key, value in config.items():
         if type(value) == edict:
-            config_str.append('')
+            config_str.append(space)
             config_str.append('# ' + key + ' options')
             config_str.append(key + ':')
-            config_str += config_to_yaml(value, space='    ')
+            config_str += config_to_yaml(value, space=space + intent)
         elif type(value) == str:
             config_str.append(space + key + ": '" + str(value) + "'")
         elif value is None:
