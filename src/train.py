@@ -63,7 +63,6 @@ def train(config):
         print('epoch:' + str(epoch))
         train_loss = []
         # train_metrics = np.zeros(len(metrics_name), dtype=float)
-        virtual_batch_counter = 0
 
         train_range = tqdm(train_generator)
         for (lr_image, hr_image) in train_range:
@@ -74,17 +73,13 @@ def train(config):
 
             loss = criterion(y_pred, y_true)
             loss.backward()
+            optimizer.step()
+            optimizer.zero_grad()
 
             train_loss.append(loss.item())
 
             train_range.set_description("TRAIN -> epoch: %4d || loss: %4.4f" % (epoch, np.mean(train_loss)))
             train_range.refresh()
-
-            if virtual_batch_counter % config.train.virtual_batch_size == 0 or virtual_batch_counter + 1 == len(train_generator):
-                optimizer.step()
-                optimizer.zero_grad()
-
-            virtual_batch_counter += 1
         
         train_loss = np.mean(train_loss)
 
@@ -107,7 +102,7 @@ def train(config):
                 loss = criterion(y_pred, y_true)
                 val_loss.append(loss.item())
 
-                val_range.set_description("VAL -> epoch: %4d || val_loss: %4.4f" % (epoch, np.mean(val_loss)))
+                val_range.set_description("VAL   -> epoch: %4d || val_loss: %4.4f" % (epoch, np.mean(val_loss)))
                 val_range.refresh()
                 # val_metrics += compute_metrics(config, y_true, y_pred, argmax_axis=-1)
 

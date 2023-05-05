@@ -9,7 +9,7 @@ model:
     # dropout: 0                            # dropout probability
     loss: MSE                               # loss function
     optimizer: adam                         # optimizer function
-    learning_rate: 0.1                      # learning rate
+    learning_rate: 0.001                    # learning rate
     # activation_function: tanh             # activation function
     # output_activation_function: sigmoid   # output activation function
     data_normalisation: true                # if true, input:image/255 and predict:output*255
@@ -29,8 +29,8 @@ train:
         X4: DIV2K_train_LR_bicubic\X4  # path to the train x4 data
 
     epochs: 30                              # number of epochs
-    batch_size: 16                          # training batch size
-    virtual_batch_size: 16                  # size of the virtual batch
+    batch_size: 64                          # training batch size
+    # virtual_batch_size: 16                # size of the virtual batch
     save_learning_curves: true              # save the learning curves
     logs_path: logs                         # path to logs folder
     save_checkpoint: all                    # if you want save the models weight: all, last, best or false
@@ -46,6 +46,6 @@ val:
         X3: DIV2K_valid_LR_bicubic\X3  # path to the valid x3 data
         X4: DIV2K_valid_LR_bicubic\X4  # path to the valid x4 data
 
-    batch_size: 16                          # validation batch size
+    batch_size: 64                          # validation batch size
     shuffle: true                           # shuffle the data at each epoch
     drop_last: false                        # drop the last batch if there dont have a complete batch

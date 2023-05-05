@@ -71,13 +71,8 @@ python main.py --mode <mode> --config_path <path to your config>
 
 # Results
 
-we ran several experiments that you can find in the 
- `logs` file:
+we ran several experiments that you can find in the  `logs` file:
 
-- `experiment_0`: training on the original images which are not of the same size and therefore with a batch size of 1
+- `experiment_0`: training on few patches (one patche with size 120*120 per image) to see the result
 
 <p align="center"><img src=logs/experiment_0/MSE.png><p>
-
-- `experiment_1`: training with patches (one patch per image)
-
-<p align="center"><img src=logs/experiment_1/MSE.png><p>

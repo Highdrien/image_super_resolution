@@ -1,4 +1,4 @@
-config_metadata: 'Saving time : 04/27/2023, 19:28:39'
+config_metadata: 'Saving time : 05/05/2023, 15:06:23'
 name: 'experiment'
 upscale_factor: 3
 
@@ -8,32 +8,36 @@ model:
     hidden_channels_2: 32
     loss: 'MSE'
     optimizer: 'adam'
-    learning_rate: 0.1
+    learning_rate: 0.001
     data_normalisation: true
+
+# data options
+data:
+    path: 'data\patches'
+    image_size: '120,120'
 
 # train options
 train:
     path:
-        HR: 'data\DIV2K_train_HR'
-        X2: 'data\DIV2K_train_LR_bicubic\X2'
-        X3: 'data\DIV2K_train_LR_bicubic\X3'
-        X4: 'data\DIV2K_train_LR_bicubic\X4'
-        epochs: 30
-        batch_size: 1
-        virtual_batch_size: 16
-        save_learning_curves: true
-        logs_path: 'logs'
-        save_checkpoint: 'all'
-        shuffle: true
-        drop_last: false
+        HR: 'DIV2K_train_HR'
+        X2: 'DIV2K_train_LR_bicubic\X2'
+        X3: 'DIV2K_train_LR_bicubic\X3'
+        X4: 'DIV2K_train_LR_bicubic\X4'
+    epochs: 30
+    batch_size: 64
+    save_learning_curves: true
+    logs_path: 'logs'
+    save_checkpoint: 'all'
+    shuffle: true
+    drop_last: false
 
 # val options
 val:
     path:
-        HR: 'data\DIV2K_valid_HR'
-        X2: 'data\DIV2K_valid_LR_bicubic\X2'
-        X3: 'data\DIV2K_valid_LR_bicubic\X3'
-        X4: 'data\DIV2K_valid_LR_bicubic\X4'
-        batch_size: 1
-        shuffle: true
-        drop_last: false
+        HR: 'DIV2K_valid_HR'
+        X2: 'DIV2K_valid_LR_bicubic\X2'
+        X3: 'DIV2K_valid_LR_bicubic\X3'
+        X4: 'DIV2K_valid_LR_bicubic\X4'
+    batch_size: 64
+    shuffle: true
+    drop_last: false
