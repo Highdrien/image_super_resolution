@@ -30,7 +30,7 @@ def all_patches(src_folder, image_name, patch_size, dst_folder):
     take one image from src_folder and save the centre patches in dst_folder
     """
     image = np.asarray(Image.open(os.path.join(src_folder, image_name)))
-
+    
     n, m, _ = np.shape(image)
     w, h = patch_size
     for x in range(0, n//w - 1):
@@ -62,8 +62,16 @@ def save_patches(src_folder, patch_size):
     
     for image_name in tqdm(os.listdir(src_folder), desc='find and save patches from ' + src_folder):
         if image_name.endswith('.jpg') or image_name.endswith('.png') or image_name.endswith('.jpeg'):
-            # center_patches(src_folder, image_name, patch_size, dst_folder)
-            all_patches(src_folder, image_name, patch_size, dst_folder)
+
+            # to create test dataset: take all image 07xx.png to save it in the test folder
+            if int(image_name[1]) != 7:
+                # center_patches(src_folder, image_name, patch_size, dst_folder)
+                all_patches(src_folder, image_name, patch_size, dst_folder)
+                
+            else:
+                test_folder = dst_folder[:12] + 'test' + dst_folder[17:]    # it will be: DIV2K\\DIV2K_test_...
+                all_patches(src_folder, image_name, patch_size, test_folder)
+                
 
 
 
