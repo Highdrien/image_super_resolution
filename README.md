@@ -73,6 +73,6 @@ python main.py --mode <mode> --config_path <path to your config>
 
 we ran several experiments that you can find in the  `logs` file:
 
-- `experiment_0`: training on few patches (one patche with size 120*120 per image) to see the result
+- `experiment_0`: training on few patches (only one patche with size 120*120 per image) to see the result
 
 <p align="center"><img src=logs/experiment_0/MSE.png><p>

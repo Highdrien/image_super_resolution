@@ -25,6 +25,30 @@ def center_patches(src_folder, image_name, patch_size, dst_folder):
     img.save(os.path.join(dst_folder, image_name))
 
 
+def all_patches(src_folder, image_name, patch_size, dst_folder):
+    """
+    take one image from src_folder and save the centre patches in dst_folder
+    """
+    image = np.asarray(Image.open(os.path.join(src_folder, image_name)))
+
+    n, m, _ = np.shape(image)
+    w, h = patch_size
+    for x in range(0, n//w - 1):
+        for y in range(0, m//h - 1):
+            patch = image[x * w: (x + 1) * w,
+                          y * h: (y + 1) * h,
+                          :]
+            
+            patch_name = image_name[:-4] + "_" + str(x) + "_" + str(y) + ".png"
+
+            if patch.shape != (w, h, 3):
+                print('ERROR patch shape number:', (x, y), ' name:', os.path.join(src_folder, image_name))
+                exit()
+
+            img = Image.fromarray(patch)
+            img.save(os.path.join(dst_folder, patch_name))
+
+
 def save_patches(src_folder, patch_size):
     """
     take all the image from the src_folder to find the centre patches on it and save it on the patches/src_folder
@@ -38,12 +62,13 @@ def save_patches(src_folder, patch_size):
     
     for image_name in tqdm(os.listdir(src_folder), desc='find and save patches from ' + src_folder):
         if image_name.endswith('.jpg') or image_name.endswith('.png') or image_name.endswith('.jpeg'):
-            center_patches(src_folder, image_name, patch_size, dst_folder)
+            # center_patches(src_folder, image_name, patch_size, dst_folder)
+            all_patches(src_folder, image_name, patch_size, dst_folder)
 
 
 
 def main():
-    patch_size = (120, 120)              # chose 120 because it's divide by 2, 3 and 4
+    patch_size = (240, 240)              # chose 240 because it's divide by 2, 3 and 4
     patch_size = np.array(patch_size)
 
     # PATH
