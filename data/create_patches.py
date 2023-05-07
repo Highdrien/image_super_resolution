@@ -67,9 +67,11 @@ def save_patches(src_folder, patch_size):
             if int(image_name[1]) != 7:
                 # center_patches(src_folder, image_name, patch_size, dst_folder)
                 all_patches(src_folder, image_name, patch_size, dst_folder)
-                
+
             else:
-                test_folder = dst_folder[:12] + 'test' + dst_folder[17:]    # it will be: DIV2K\\DIV2K_test_...
+                test_folder = dst_folder[:14] + 'test' + dst_folder[19:]    # it will be: DIV2K\\DIV2K_test_...
+                if not os.path.exists(test_folder):
+                    os.makedirs(test_folder)
                 all_patches(src_folder, image_name, patch_size, test_folder)
                 
 
