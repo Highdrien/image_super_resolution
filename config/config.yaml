@@ -18,7 +18,7 @@ model:
 # data options
 data:
     path: data\patches
-    image_size: 120,120
+    image_size: 240,240
 
 # train options
 train:

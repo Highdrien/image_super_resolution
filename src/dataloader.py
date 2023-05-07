@@ -12,7 +12,7 @@ torch.manual_seed(0)
 class DataGenerator(Dataset):
     def __init__(self, config, mode):
         if mode not in ['train','val', 'test']:
-            print('invalid mode')
+            print("invalid mode: choose between train, val and test")
             exit()
 
         self.mode = mode
@@ -23,26 +23,22 @@ class DataGenerator(Dataset):
         self.HR_path = os.path.join(config.data.path, config[mode].path.HR)
         self.LR_path = os.path.join(config.data.path, config[mode].path['X' + str(self.upscale_factor)])
 
-        # end of images name
-        self.HR_end = '.png'
-        self.LR_end = 'x' + str(self.upscale_factor) + '.png'
-
-        self.length = len(os.listdir(self.HR_path))
+        # list of image name
+        self.HR_data = os.listdir(self.HR_path)
+        self.LR_data = os.listdir(self.LR_path)
 
     def __len__(self):
         """
         Denotes the number of batches per epoch
         """
-        return self.length
+        return len(self.HR_data)
 
     def __getitem__(self, index):
         """
         get the hr (high resolution) and the lr (low resolution) from a image number (index)
         """
-        image_name = find_image_name(index, self.mode)
-
-        hr_image = read_image(os.path.join(self.HR_path, image_name + self.HR_end))
-        lr_image = read_image(os.path.join(self.LR_path, image_name + self.LR_end))
+        hr_image = read_image(os.path.join(self.HR_path, self.HR_data[index]))
+        lr_image = read_image(os.path.join(self.LR_path, self.LR_data[index]))
         
         if self.normalisation:
             lr_image = lr_image / 255
@@ -69,4 +65,4 @@ def create_generator(config, mode):
 def getbatch(config, mode):
     dataloader = create_generator(config, mode)
     X, Y = next(iter(dataloader))
-    plot_getitem(X, Y, config.upscale_factor, index=0)
+    plot_getitem(X, Y, config.upscale_factor, index=2)
