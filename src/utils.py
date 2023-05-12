@@ -36,7 +36,6 @@ def save_learning_curves(path):
     epochs = result[:, 0]
     loss = result[:, 1]
     val_loss = result[:, 2]
-
     plt.plot(epochs, loss)
     plt.plot(epochs, val_loss)
     plt.title(names[1])
@@ -46,6 +45,20 @@ def save_learning_curves(path):
     plt.grid()
     plt.savefig(os.path.join(path, names[1] + '.png'))
     plt.close()
+    if (len(names)>3):
+        epochs = result[:, 0]
+        psnr = result[:, 3]
+        val_psnr = result[:, 4]
+        plt.plot(epochs, psnr)
+        plt.plot(epochs, val_psnr)
+        plt.title(names[3])
+        plt.xlabel('epoch')
+        plt.ylabel(names[3])
+        plt.legend(names[3:])
+        plt.grid()
+        plt.savefig(os.path.join(path, names[3] + '.png'))
+        plt.close()
+
 
 
 def get_result(path):
@@ -61,4 +74,4 @@ def get_result(path):
 
 
 if __name__ == "__main__":
-    save_learning_curves('../logs/experiment_0')
+    save_learning_curves('../logs/experiment_3')

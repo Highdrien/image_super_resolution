@@ -29,7 +29,7 @@ def train_logger(config):
 
     # create train_log.csv where save the metrics
     with open(os.path.join(path, 'train_log.csv'), 'w') as f:
-        first_line = 'step,' + config.model.loss + ',val ' + config.model.loss
+        first_line = 'step,' + config.model.loss + ',val ' + config.model.loss+',PSNR,val PSNR'
         f.write(first_line + '\n')
     f.close()
 
@@ -69,12 +69,12 @@ def config_to_yaml(config, space=''):
     return config_str
 
 
-def train_step_logger(path, epoch, train_loss, val_loss):
+def train_step_logger(path, epoch, train_loss, val_loss, train_psnr, val_psnr):
     """
     writes loss and metrics values in the train_log.csv
     """
     with open(os.path.join(path, 'train_log.csv'), 'a') as file:
-        line = str(epoch) + ',' + str(train_loss) + ',' + str(val_loss)
+        line = str(epoch) + ',' + str(train_loss) + ',' + str(val_loss) + ',' + str(train_psnr) + ',' + str(val_psnr)
         file.write(line + '\n')
     file.close()
 
