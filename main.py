@@ -6,6 +6,7 @@ from easydict import EasyDict as edict
 from src.dataloader import getbatch
 from src.train import train
 from src.test import test
+from src.bicubic import test_bicubic
 
 
 def load_config(path='configs/config.yaml'):
@@ -14,17 +15,19 @@ def load_config(path='configs/config.yaml'):
 
 
 def main(options):
+    config = load_config(options['config_path'])
+
     if options['mode'] == 'data':
-        config = load_config(options['config_path'])
         getbatch(config, 'train')
 
     elif options['mode'] == 'train':
-        config = load_config(options['config_path'])
         train(config)
     
     elif options['mode'] == 'test':
-        config = load_config(options['config_path'])
         test(options['path'], config)
+
+    elif options['mode'] == 'bicubic':
+        test_bicubic(config)
 
     else:
         print(options['mode'])
