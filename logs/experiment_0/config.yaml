@@ -41,3 +41,18 @@ val:
     batch_size: 64
     shuffle: true
     drop_last: false
+
+
+# test options
+test:
+    path:
+        HR: DIV2K_test_HR
+        X2: DIV2K_test_LR_bicubic\X2
+        X3: DIV2K_test_LR_bicubic\X3
+        X4: DIV2K_test_LR_bicubic\X4
+
+    batch_size: 64
+    shuffle: false 
+    drop_last: false
+
+    checkpoint: last

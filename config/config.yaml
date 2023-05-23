@@ -49,3 +49,18 @@ val:
     batch_size: 64                          # validation batch size
     shuffle: true                           # shuffle the data at each epoch
     drop_last: false                        # drop the last batch if there dont have a complete batch
+
+
+# test options
+test:
+    path:
+        HR: DIV2K_test_HR             # path to the test HR data
+        X2: DIV2K_test_LR_bicubic\X2  # path to the test x2 data
+        X3: DIV2K_test_LR_bicubic\X3  # path to the test x3 data
+        X4: DIV2K_test_LR_bicubic\X4  # path to the test x4 data
+
+    batch_size: 64                          # validation batch size
+    shuffle: false                          # shuffle the data
+    drop_last: false                        # drop the last batch if there dont have a complete batch
+
+    checkpoint: best
