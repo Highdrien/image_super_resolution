@@ -16,7 +16,7 @@ def number_folder(path, name):
     return name + str(last_index + 1)
 
 
-def train_logger(config, metrics_name):
+def train_logger(config):
     """
     creates a logs folder where we can find the config in confing.yaml and
     create train_log.csv which will contain the loss and metrics values
@@ -72,7 +72,7 @@ def config_to_yaml(config, space=''):
     return config_str
 
 
-def train_step_logger(path, epoch, train_loss, val_loss):
+def train_step_logger(path, epoch, train_loss, val_loss, train_metrics, val_metrics):
     """
     writes loss and metrics values in the train_log.csv
     """

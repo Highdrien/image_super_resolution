@@ -54,7 +54,7 @@ def train(config):
     metrics_name = list(filter(lambda x: config.metrics[x], config.metrics))
 
     # Save training
-    logging_path = train_logger(config, metrics_name)
+    logging_path = train_logger(config)
 
     best_epoch, best_val_loss = 0, 10e6
 
