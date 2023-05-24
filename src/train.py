@@ -3,6 +3,7 @@ import numpy as np
 from tqdm import tqdm
 
 import torch
+from torchmetrics import PeakSignalNoiseRatio
 
 from src.model import get_model
 from src.utils import save_learning_curves
@@ -62,6 +63,7 @@ def train(config):
     for epoch in range(1, config.train.epochs + 1):
         print('epoch:' + str(epoch))
         train_loss = []
+        train_psnr = []
         # train_metrics = np.zeros(len(metrics_name), dtype=float)
 
         train_range = tqdm(train_generator)
@@ -77,11 +79,14 @@ def train(config):
             optimizer.zero_grad()
 
             train_loss.append(loss.item())
+            psnr_tensor = psnr(y_pred, y_true)
+            train_psnr.append(psnr_tensor.item())
 
             train_range.set_description("TRAIN -> epoch: %4d || loss: %4.4f" % (epoch, np.mean(train_loss)))
             train_range.refresh()
         
         train_loss = np.mean(train_loss)
+        train_psnr = np.mean(train_psnr)
 
         ###############################################################
         # Start Validation                                            #
@@ -89,6 +94,7 @@ def train(config):
 
         model.eval()
         val_loss = []
+        val_psnr = []
         val_range = tqdm(val_generator)
 
         with torch.no_grad():
@@ -101,18 +107,22 @@ def train(config):
 
                 loss = criterion(y_pred, y_true)
                 val_loss.append(loss.item())
+                psnr_tensor = psnr(y_pred, y_true)
+                val_psnr.append(psnr_tensor.item())
+
 
                 val_range.set_description("VAL   -> epoch: %4d || val_loss: %4.4f" % (epoch, np.mean(val_loss)))
                 val_range.refresh()
                 # val_metrics += compute_metrics(config, y_true, y_pred, argmax_axis=-1)
 
         val_loss = np.mean(val_loss)
+        val_psnr = np.mean(val_psnr)
 
         ###################################################################
         # Save Scores in logs                                             #
         ###################################################################
 
-        train_step_logger(logging_path, epoch, train_loss, val_loss)
+        train_step_logger(logging_path, epoch, train_loss, val_loss, train_psnr, val_psnr)
 
         if config.train.save_checkpoint.lower() == 'all':
             checkpoint_path = os.path.join(logging_path, 'checkpoint_path')
