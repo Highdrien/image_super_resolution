@@ -55,4 +55,4 @@ test:
     shuffle: false 
     drop_last: false
 
-    checkpoint: last
+    checkpoint: model30pth

@@ -48,5 +48,5 @@ def test_bicubic(config):
 
     if not(os.path.exists(logging_path)):
         os.mkdir(logging_path)
-    test_logger(logging_path, [config.model.loss], [test_loss])
+    test_logger(logging_path, [config.model.loss], [test_loss], config.upscale_factor)
 

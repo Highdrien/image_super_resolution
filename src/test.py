@@ -67,7 +67,7 @@ def test(logging_path, config):
     test_loss = test_loss / len(test_generator)
     print('test loss:', test_loss)
 
-    test_logger(logging_path, [config.model.loss], [test_loss])
+    test_logger(logging_path, [config.model.loss], [test_loss], config.upscale_factor)
 
 
 
