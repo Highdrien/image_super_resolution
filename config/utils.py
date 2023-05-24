@@ -79,10 +79,10 @@ def train_step_logger(path, epoch, train_loss, val_loss, train_psnr, val_psnr):
     file.close()
 
 
-def test_logger(path, metrics, values):
+def test_logger(path, metrics, values, upscale_factor):
     """
     creates a file 'test_log.txt' in the path containing for each line: metrics[i]: values[i]
     """
-    with open(os.path.join(path, 'test_log.txt'), 'w') as f:
+    with open(os.path.join(path, 'test_log.txt'), 'a') as f:
         for i in range(len(metrics)):
-            f.write(metrics[i] + ': ' + str(values[i]) + '\n')
+            f.write('upscale_factor: ' + str(upscale_factor) + ' -> ' + metrics[i] + ': ' + str(values[i]) + '\n')

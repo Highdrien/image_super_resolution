@@ -1,0 +1,3 @@
+upscale_factor: 2 -> MSE: 0.0019038288788262594
+upscale_factor: 3 -> MSE: 0.003239304459977733
+upscale_factor: 4 -> MSE: 0.004246693033644039
