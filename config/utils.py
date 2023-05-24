@@ -16,7 +16,7 @@ def number_folder(path, name):
     return name + str(last_index + 1)
 
 
-def train_logger(config):
+def train_logger(config, metrics_name):
     """
     creates a logs folder where we can find the config in confing.yaml and
     create train_log.csv which will contain the loss and metrics values
@@ -30,6 +30,9 @@ def train_logger(config):
     # create train_log.csv where save the metrics
     with open(os.path.join(path, 'train_log.csv'), 'w') as f:
         first_line = 'step,' + config.model.loss + ',val ' + config.model.loss
+        for metric in list(filter(lambda x: config.metrics[x], config.metrics)):
+            first_line += ',' + metric
+            first_line += ',val ' + metric
         f.write(first_line + '\n')
     f.close()
 
@@ -69,12 +72,15 @@ def config_to_yaml(config, space=''):
     return config_str
 
 
-def train_step_logger(path, epoch, train_loss, val_loss):
+def train_step_logger(path, epoch, train_loss, val_loss, train_metrics, val_metrics):
     """
     writes loss and metrics values in the train_log.csv
     """
     with open(os.path.join(path, 'train_log.csv'), 'a') as file:
         line = str(epoch) + ',' + str(train_loss) + ',' + str(val_loss)
+        for i in range(len(train_metrics)):
+            line += ',' + str(train_metrics[i])
+            line += ',' + str(val_metrics[i])
         file.write(line + '\n')
     file.close()
 

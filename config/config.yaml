@@ -1,5 +1,5 @@
 name: experiment                            # name of the config. DOES NOT HAVE SPACE ON IT
-upscale_factor: 4                           # upscale_factor can be 2, 3 or 4
+upscale_factor: 3                           # upscale_factor can be 2, 3 or 4
 
 
 # model options
@@ -19,6 +19,10 @@ model:
 data:
     path: data\patches
     image_size: 240,240
+
+
+metrics:
+    PSNR: true                          # PeakSignalNoiseRatio
 
 # train options
 train:
