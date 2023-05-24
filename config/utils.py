@@ -72,7 +72,7 @@ def config_to_yaml(config, space=''):
     return config_str
 
 
-def train_step_logger(path, epoch, train_loss, val_loss, train_metrics, val_metrics):
+def train_step_logger(path, epoch, train_loss, val_loss):
     """
     writes loss and metrics values in the train_log.csv
     """
