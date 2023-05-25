@@ -9,7 +9,7 @@ def compute_metrics(config, y_pred, y_true):
         metrics.append(psnr(y_pred, y_true))
     # PSRN calculate difference pixel per pixel
 
-    if config.metrics.PSNR:
+    if config.metrics.MSSIM:
         ms_ssim = MultiScaleStructuralSimilarityIndexMeasure(data_range=1.0)
         metrics.append(ms_ssim(y_pred, y_true))
     # MS-SSIM is a multi-scale metrics based on SSIM
