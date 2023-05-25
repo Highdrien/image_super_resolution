@@ -37,16 +37,17 @@ def train(config):
 
     # Loss
     if config.model.loss.lower() == 'mse':
+        print('optimizer: mse')
         criterion = torch.nn.MSELoss()
     else:
         raise 'MSE loss is the only one to be implemented'
 
     # Optimizer
     if config.model.optimizer.lower() == "adam":
-        print('loss: adam')
+        print('optimizer: adam')
         optimizer = torch.optim.Adam(model.parameters(), lr=config.model.learning_rate)
     elif config.model.optimizer.lower() == "sgd":
-        print('loss: sgd')
+        print('optimizer: sgd')
         optimizer = torch.optim.SGD(model.parameters(), lr=config.model.learning_rate)
     else:
         raise 'please choose between adam or sgd optimizer'

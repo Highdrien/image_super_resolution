@@ -24,6 +24,7 @@ data:
 
 metrics:
     PSNR: true                          # PeakSignalNoiseRatio
+    MSSSIM: true                        # Multi Scale Structural Similarity Index Measure
 
 
 # train options
