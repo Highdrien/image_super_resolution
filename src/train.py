@@ -8,6 +8,7 @@ from src.model import get_model
 from src.metrics import compute_metrics
 from src.utils import save_learning_curves
 from src.dataloader import create_generator
+from src.checkpoints import save_checkpoint_all, save_checkpoint_best, save_checkpoint_last
 
 from config.utils import train_logger, train_step_logger
 
@@ -122,25 +123,17 @@ def train(config):
 
         train_step_logger(logging_path, epoch, train_loss, val_loss, train_metrics, val_metrics)
 
-        if config.train.save_checkpoint.lower() == 'all':
-            checkpoint_path = os.path.join(logging_path, 'checkpoint_path')
-            checkpoint_name = 'model' + str(epoch) + 'pth'
-            os.makedirs(checkpoint_path, exist_ok=True)
-            torch.save(model.state_dict(), os.path.join(checkpoint_path, checkpoint_name))
+        if config.checkpoint.save == 'all':
+            save_checkpoint_all(model, logging_path, epoch)
 
-        elif config.train.save_checkpoint.lower() == 'best':
-            if val_loss < best_val_loss:
-                print('saving checkpoints')
-                best_epoch, best_val_loss = epoch, val_loss
-                torch.save(model.state_dict(), os.path.join(logging_path, 'model.pth'))
+        elif config.checkpoint.save == 'best':
+            best_epoch, best_val_loss = save_checkpoint_best(model, logging_path, epoch, best_epoch, val_loss, best_val_loss)
 
-    if config.train.save_checkpoint.lower() == 'best':
-        old_name = os.path.join(logging_path, 'model.pth')
-        new_name = os.path.join(logging_path, 'model' + str(best_epoch) + '.pth')
-        os.rename(old_name, new_name)
+    if config.checkpoint.save == 'best':
+        save_checkpoint_best(model, logging_path, epoch, best_epoch, val_loss, best_val_loss, end_training=True)
 
-    elif config.train.save_checkpoint.lower() == 'last':
-        torch.save(model.state_dict(), os.path.join(logging_path, 'model' + str(config.train.epochs + 1) + '.pth'))
+    elif config.checkpoint.save == 'last':
+        save_checkpoint_last(config, model, logging_path)
 
     if config.train.save_learning_curves:
         save_learning_curves(logging_path)

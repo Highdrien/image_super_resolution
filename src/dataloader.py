@@ -10,6 +10,9 @@ torch.manual_seed(0)
 
 
 class DataGenerator(Dataset):
+    """
+    generator for train, validation and test
+    """
     def __init__(self, config, mode):
         if mode not in ['train','val', 'test']:
             print("invalid mode: choose between train, val and test")
@@ -47,22 +50,56 @@ class DataGenerator(Dataset):
         return lr_image, hr_image
 
 
-def find_image_name(index, mode):
-    if mode == 'val':
-        index += 800
-    return str(index + 1).zfill(4)    # to convert xxx to '0xxx', xx to '00xx', x to '000x'
-
-
 def create_generator(config, mode):
     """Returns generator from a config and a mode ('train','val','test')"""
     generator = DataGenerator(config, mode)
     return DataLoader(generator, 
-                      batch_size=config.train.batch_size, 
-                      shuffle=config.train.shuffle, 
-                      drop_last=config.train.drop_last)
+                      batch_size=config[mode].batch_size, 
+                      shuffle=config[mode].shuffle, 
+                      drop_last=config[mode].drop_last)
 
 
 def getbatch(config, mode):
     dataloader = create_generator(config, mode)
     X, Y = next(iter(dataloader))
     plot_getitem(X, Y, config.upscale_factor, index=2)
+
+
+
+class PredictGenerator(Dataset):
+    """
+    generator for the prediction
+    """
+    def __init__(self, config):
+
+        self.upscale_factor = config.upscale_factor
+        self.normalisation = config.model.data_normalisation
+
+        # path to datas
+        self.src_path = config.predict.src_path
+
+        # list of image name
+        self.images_name = os.listdir(self.src_path)
+
+    def __len__(self):
+        return len(self.images_name)
+
+    def __getitem__(self, index):
+        """
+        get the lr (low resolution) from a image number (index)
+        """
+        lr_image = read_image(os.path.join(self.LR_path, self.LR_data[index]))
+        
+        if self.normalisation:
+            lr_image = lr_image / 255
+
+        return lr_image
+
+
+def create_predict_generator(config):
+    """Return the prediction's generator from a config """
+    generator = PredictGenerator(config)
+    return DataLoader(generator, 
+                      batch_size=config.predict.batch_size, 
+                      shuffle=False, 
+                      drop_last=False)

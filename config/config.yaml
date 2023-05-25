@@ -24,6 +24,10 @@ data:
 metrics:
     PSNR: true                          # PeakSignalNoiseRatio
 
+
+checkpoint:
+    save: best                          # if you want save the models weight: all, last, best or false
+
 # train options
 train:
     path:
@@ -37,7 +41,6 @@ train:
     # virtual_batch_size: 16                # size of the virtual batch
     save_learning_curves: true              # save the learning curves
     logs_path: logs                         # path to logs folder
-    save_checkpoint: all                    # if you want save the models weight: all, last, best or false
     shuffle: true                           # shuffle the data at each epoch
     drop_last: false                        # drop the last batch if there dont have a complete batch
 
@@ -67,4 +70,9 @@ test:
     shuffle: false                          # shuffle the data
     drop_last: false                        # drop the last batch if there dont have a complete batch
 
-    checkpoint: best
+
+# prediction options
+predict:
+    src_path: data\precition\src            # path of the images that will be predicted
+    dst_path: data\prediction\dst           # path where the predicted images will be saved
+    end_image_name: _predict                # end of the image name: example, the prediction of image3.png will be image3<end_image_name>.png

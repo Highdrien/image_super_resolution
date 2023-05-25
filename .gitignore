@@ -1,6 +1,4 @@
 DIV2K
 patches
 center_patches
-checkpoint_path/model*pth
-!checkpoint_path/model30pth
 __pycache__

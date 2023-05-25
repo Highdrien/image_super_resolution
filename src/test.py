@@ -5,6 +5,7 @@ import torch
 
 from src.model import get_model
 from src.dataloader import create_generator
+from src.checkpoints import get_checkpoint_path
 
 from config.utils import test_logger
 
@@ -53,7 +54,7 @@ def test(logging_path, config):
     model.eval()
 
     test_loss = 0
-    # train_metrics = np.zeros(len(metrics_name), dtype=float)
+    # train_metrics = np.zeros(len(metrics_name), dtype=float) #TODO: add metrics in the test
 
     for (lr_image, hr_image) in tqdm(test_generator):
         lr_image = lr_image.to(device)
@@ -68,34 +69,3 @@ def test(logging_path, config):
     print('test loss:', test_loss)
 
     test_logger(logging_path, [config.model.loss], [test_loss], config.upscale_factor)
-
-
-
-def get_checkpoint_path(config, path):
-    pth_in_path = list(filter(lambda x: x[-3:] == 'pth', os.listdir(path)))
-
-    if len(pth_in_path) == 1:
-        return os.path.join(path, pth_in_path[0])
-
-    if len(pth_in_path) == 0 and 'checkpoint_path' in os.listdir(path):
-        model_path = os.path.join(path, 'checkpoint_path')
-        print(model_path)
-
-        if config.test.checkpoint in os.listdir(model_path):
-            return os.path.join(model_path, config.test.checkpoint)
-
-        elif config.test.checkpoint == 'last':
-            pth_in_checkpoint = list(filter(lambda x: x[-3:] == 'pth', os.listdir(model_path)))
-            model_name = 'model' + str(len(pth_in_checkpoint)) + 'pth'
-            return os.path.join(model_path, model_name)
-
-        elif 'model' + config.test.checkpoint + 'pth' in os.listdir(model_path):
-            return os.path.join(model_path, 'model' + config.test.checkpoint + 'pth')
-
-    elif config.test.checkpoint == 'last':
-        return os.path.join(path, pth_in_path[-1])
-
-    elif 'model' + config.test.checkpoint + 'pth' in os.listdir(path):
-        return os.path.join(path, 'model' + config.test.checkpoint + 'pth')
-
-    raise 'The model weights could not be found'
