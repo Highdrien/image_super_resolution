@@ -34,7 +34,7 @@ class DataGenerator(Dataset):
         """
         Denotes the number of batches per epoch
         """
-        return 100
+        return len(self.LR_data)
 
     def __getitem__(self, index):
         """

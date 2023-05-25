@@ -11,6 +11,9 @@ model:
     learning_rate: 0.001
     data_normalisation: true
 
+metrics:
+    PSNR: true
+
 # data options
 data:
     path: 'data\patches'

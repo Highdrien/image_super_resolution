@@ -90,5 +90,6 @@ def test_logger(path, metrics, values, upscale_factor):
     creates a file 'test_log.txt' in the path containing for each line: metrics[i]: values[i]
     """
     with open(os.path.join(path, 'test_log.txt'), 'a') as f:
+        f.write('upscale_factor: ' + str(upscale_factor) + '\n')
         for i in range(len(metrics)):
-            f.write('upscale_factor: ' + str(upscale_factor) + ' -> ' + metrics[i] + ': ' + str(values[i]) + '\n')
+            f.write(metrics[i] + ': ' + str(values[i]) + '\n')

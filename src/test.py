@@ -1,9 +1,11 @@
 import os
+import numpy as np
 from tqdm import tqdm
 
 import torch
 
 from src.model import get_model
+from src.metrics import compute_metrics
 from src.dataloader import create_generator
 from src.checkpoints import get_checkpoint_path
 
@@ -33,7 +35,7 @@ def test(logging_path, config):
     model.to(device)
 
     # Load model's weight
-    checkpoint_path = get_checkpoint_path(config, logging_path)
+    checkpoint_path = get_checkpoint_path(config, logging_path, mode='test')
     print("checkpoint path:", checkpoint_path)
     checkpoint = torch.load(checkpoint_path, map_location=device)
     model.load_state_dict(checkpoint)
@@ -47,6 +49,9 @@ def test(logging_path, config):
         criterion = torch.nn.MSELoss()
     else:
         raise 'MSE loss is the only one to be implemented'
+    
+    # Metrics
+    metrics_name = list(filter(lambda x: config.metrics[x], config.metrics))
 
     ###############################################################
     # Start Evaluation                                            #
@@ -54,7 +59,7 @@ def test(logging_path, config):
     model.eval()
 
     test_loss = 0
-    # train_metrics = np.zeros(len(metrics_name), dtype=float) #TODO: add metrics in the test
+    test_metrics = np.zeros(len(metrics_name), dtype=float) #TODO: add metrics in the test
 
     for (lr_image, hr_image) in tqdm(test_generator):
         lr_image = lr_image.to(device)
@@ -64,8 +69,12 @@ def test(logging_path, config):
 
         loss = criterion(y_pred, y_true)
         test_loss += loss.item()
+        test_metrics += compute_metrics(config, y_pred.detach(), y_true.detach())
         
     test_loss = test_loss / len(test_generator)
     print('test loss:', test_loss)
 
-    test_logger(logging_path, [config.model.loss], [test_loss], config.upscale_factor)
+    metrics_name = [config.model.loss] + metrics_name
+    metrics_value = [test_loss] + list(test_metrics)
+
+    test_logger(logging_path, metrics_name, metrics_value, config.upscale_factor)
