@@ -72,6 +72,7 @@ def test(logging_path, config):
         test_metrics += compute_metrics(config, y_pred.detach(), y_true.detach())
         
     test_loss = test_loss / len(test_generator)
+    test_metrics = test_metrics / len(test_generator)
     print('test loss:', test_loss)
 
     metrics_name = [config.model.loss] + metrics_name

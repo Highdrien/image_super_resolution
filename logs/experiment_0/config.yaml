@@ -64,4 +64,5 @@ test:
 predict:
     src_path: data\prediction\src            # path of the images that will be predicted
     dst_path: data\prediction\dst           # path where the predicted images will be saved
-    end_image_name: _predict 
+    end_image_name: _experiemnt0 
+    size_overlay: 20
