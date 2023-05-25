@@ -48,6 +48,11 @@ def main(options):
         config_path = os.path.join(options['path'], find_config(options['path']))
         config = load_config(config_path)
         predict(options['path'], config)
+    
+    elif options['mode'] == 'resumetrain':
+        config_path = os.path.join(options['path'], find_config(options['path']))
+        config = load_config(config_path)
+        train(config, resume_training=options['path'])
 
     elif options['mode'] == 'bicubic':
         config = load_config(options['config_path'])

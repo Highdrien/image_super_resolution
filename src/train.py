@@ -6,22 +6,26 @@ import torch
 
 from src.model import get_model
 from src.metrics import compute_metrics
-from src.utils import save_learning_curves
+from src.utils import save_learning_curves, find_best_from_csv
 from src.dataloader import create_generator
-from src.checkpoints import save_checkpoint_all, save_checkpoint_best, save_checkpoint_last
+from src.checkpoints import save_checkpoint_all, save_checkpoint_best, save_checkpoint_last, get_checkpoint_path
 
 from config.utils import train_logger, train_step_logger
 
 torch.manual_seed(0)
 
 
-def train(config):
+def train(config, resume_training=None):
     """
     makes a training according to the chosen configuration
+    if resume_training == None -> do a new training
+    else -> resume training from the path: "resume_training"
     """
+    if resume_training is not None:
+        print('Resume training from', resume_training)
+
     train_generator = create_generator(config, mode='train')
     val_generator = create_generator(config, mode='val')
-
 
     # Use gpu or cpu
     if torch.cuda.is_available():
@@ -32,8 +36,15 @@ def train(config):
 
     # Model
     model = get_model(config)
-    # model.to(torch.float)
     model.to(device)
+
+    if resume_training is not None:
+        # Load model's weight
+        checkpoint_path = get_checkpoint_path(config, resume_training)
+        print("checkpoint path:", checkpoint_path)
+        checkpoint = torch.load(checkpoint_path, map_location=device)
+        model.load_state_dict(checkpoint)
+        del checkpoint  # dereference
 
     # Loss
     if config.model.loss.lower() == 'mse':
@@ -56,16 +67,21 @@ def train(config):
     metrics_name = list(filter(lambda x: config.metrics[x], config.metrics))
 
     # Save training
-    logging_path = train_logger(config)
+    if resume_training is None:
+        logging_path = train_logger(config)
+        epoch_start = 1
+        best_epoch, best_val_loss = 0, 10e6
 
-    best_epoch, best_val_loss = 0, 10e6
+    else:
+        logging_path = resume_training
+        best_epoch, best_val_loss, epoch_start = find_best_from_csv(os.path.join(logging_path, 'train_log.csv'))
 
     ###############################################################
     # Start Training                                              #
     ###############################################################
     model.train()
 
-    for epoch in range(1, config.train.epochs + 1):
+    for epoch in range(epoch_start, config.train.epochs + 1):
         print('epoch:' + str(epoch))
         train_loss = []
         train_metrics = np.zeros(len(metrics_name), dtype=float)
