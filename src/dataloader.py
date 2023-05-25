@@ -1,5 +1,5 @@
 import os
-
+import math
 import torch
 from torchvision.io import read_image
 from torch.utils.data import Dataset, DataLoader
@@ -42,7 +42,7 @@ class DataGenerator(Dataset):
         """
         hr_image = read_image(os.path.join(self.HR_path, self.HR_data[index]))
         lr_image = read_image(os.path.join(self.LR_path, self.LR_data[index]))
-        
+
         if self.normalisation:
             lr_image = lr_image / 255
             hr_image = hr_image / 255
@@ -53,9 +53,9 @@ class DataGenerator(Dataset):
 def create_generator(config, mode):
     """Returns generator from a config and a mode ('train','val','test')"""
     generator = DataGenerator(config, mode)
-    return DataLoader(generator, 
-                      batch_size=config[mode].batch_size, 
-                      shuffle=config[mode].shuffle, 
+    return DataLoader(generator,
+                      batch_size=config[mode].batch_size,
+                      shuffle=config[mode].shuffle,
                       drop_last=config[mode].drop_last)
 
 
@@ -92,44 +92,59 @@ class PredictGenerator(Dataset):
         """
         lr_image = read_image(os.path.join(self.src_path, self.images_name[index]))
         shape = lr_image.shape
-
+        size_overlay = 20
+        size_patches = self.size_patches
         if self.normalisation:
             lr_image = lr_image / 255
 
         canal, x, y = lr_image.shape
 
-        # Calculer les dimensions modifiées de l'image
-        x_modifie = x + (self.size_patches - x % self.size_patches) if x % self.size_patches != 0 else x
-        y_modifie = y + (self.size_patches - y % self.size_patches) if y % self.size_patches != 0 else y
+        # Calculate the number of patches in each dimension
+        nb_patches_x = math.ceil((x-size_patches)/(size_patches-size_overlay))+1
+        nb_patches_y = math.ceil((y-size_patches)/(size_patches-size_overlay))+1
+        nb_patches = nb_patches_x * nb_patches_y
 
-        # Créer un tenseur pour l'image modifiée
+        # Calculate the modified image dimensions
+        # x_modifie = x + (self.size_patches - x % self.size_patches) if x % self.size_patches != 0 else x
+        # y_modifie = y + (self.size_patches - y % self.size_patches) if y % self.size_patches != 0 else y
+        x_modifie = size_patches+(size_patches-size_overlay)*(nb_patches_x-1)
+        y_modifie = size_patches+(size_patches-size_overlay)*(nb_patches_y-1)
+        
+        # Create the tensor for the modified image
         image_modifiee = torch.zeros((canal, x_modifie, y_modifie))
 
-        # Copier les valeurs de l'image d'origine
+        # Copy the original image in the modified image
         image_modifiee[:, :x, :y] = lr_image
 
         c, w, h = image_modifiee.shape
-        
-        
-        # Calculate the number of patches in each dimension
-        nb_patches_x = w // self.size_patches
-        nb_patches_y = h // self.size_patches
-        nb_patches = nb_patches_x * nb_patches_y
+
+        # nb_patches_x = w // self.size_patches
+        # nb_patches_y = h // self.size_patches
+
+
 
         # Create torsor to save patches
         patches = torch.zeros((nb_patches, c, self.size_patches, self.size_patches))
 
         # Cutting the image into patches
-        idx = 0
+        # idx = 0
         for i in range(nb_patches_x):
-            for j in range(nb_patches_y):
-                begin_x = i * self.size_patches
-                begin_y = j * self.size_patches
-                fin_x = begin_x + self.size_patches
-                fin_y = begin_y + self.size_patches
-                sous_image = image_modifiee[:, begin_x:fin_x, begin_y:fin_y]
-                patches[idx] = sous_image
-                idx += 1
+            for j in range(nb_patches_y):                
+                # begin_x = i * self.size_patches
+                # begin_y = j * self.size_patches
+                # fin_x = begin_x + self.size_patches #begin in english and fin in french XD
+                # fin_y = begin_y + self.size_patches
+                # sous_image = image_modifiee[:, begin_x:fin_x, begin_y:fin_y]
+                # patches[idx] = sous_image
+                # idx += 1
+                idx = i*nb_patches_y+j
+                begin_x=i*(size_patches-size_overlay)
+                begin_y=j*(size_patches-size_overlay)
+                end_x=begin_x+size_patches
+                end_y=begin_y+size_patches
+                sous_image=image_modifiee[:, begin_x:end_x, begin_y:end_y]
+                patches[idx] = sous_image    
+                
 
         return patches, self.images_name[index], shape
 
@@ -137,7 +152,7 @@ class PredictGenerator(Dataset):
 def create_predict_generator(config):
     """Return the prediction's generator from a config """
     generator = PredictGenerator(config)
-    return DataLoader(generator, 
-                      batch_size=1, 
-                      shuffle=False, 
+    return DataLoader(generator,
+                      batch_size=1,
+                      shuffle=False,
                       drop_last=False)
