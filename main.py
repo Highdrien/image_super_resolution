@@ -60,7 +60,7 @@ def main(options):
 
     else:
         print(options['mode'])
-        print('ERROR: please chose between data, train, test, bicubic or predict')
+        print('ERROR: please chose between data, train, test, bicubic, predict or resumetrain')
         exit()
 
 
@@ -68,9 +68,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     # Options
-    parser.add_argument('--mode', default=None, type=str, help="choose a mode between 'data', 'train', 'test' and 'predict'")
-    parser.add_argument('--config_path', default=os.path.join('config', 'config.yaml'), type=str, help="path to config")
-    parser.add_argument('--path', type=str, help="experiment path (only for test or prediction)")
+    parser.add_argument('--mode', default=None, type=str, help="choose a mode between 'data', 'train', 'test', 'predict', 'bicubic' and 'resumetrain'")
+    parser.add_argument('--config_path', default=os.path.join('config', 'config.yaml'), type=str, help="path to config (for training)")
+    parser.add_argument('--path', type=str, help="experiment path (for test, prediction or resume previous training)")
 
     args = parser.parse_args()
     options = vars(args)
