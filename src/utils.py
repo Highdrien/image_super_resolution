@@ -34,31 +34,18 @@ def save_learning_curves(path):
     result, names = get_result(path)
 
     epochs = result[:, 0]
-    loss = result[:, 1]
-    val_loss = result[:, 2]
-    plt.plot(epochs, loss)
-    plt.plot(epochs, val_loss)
-    plt.title(names[1])
-    plt.xlabel('epoch')
-    plt.ylabel(names[1])
-    plt.legend(names[1:])
-    plt.grid()
-    plt.savefig(os.path.join(path, names[1] + '.png'))
-    plt.close()
-    if (len(names)>3):
-        epochs = result[:, 0]
-        psnr = result[:, 3]
-        val_psnr = result[:, 4]
-        plt.plot(epochs, psnr)
-        plt.plot(epochs, val_psnr)
-        plt.title(names[3])
+    for i in range(1, len(names), 2):
+        train_metrics = result[:, i]
+        val_metrics = result[:, i + 1]
+        plt.plot(epochs, train_metrics)
+        plt.plot(epochs, val_metrics)
+        plt.title(names[i])
         plt.xlabel('epoch')
-        plt.ylabel(names[3])
-        plt.legend(names[3:])
+        plt.ylabel(names[i])
+        plt.legend(names[i:])
         plt.grid()
-        plt.savefig(os.path.join(path, names[3] + '.png'))
+        plt.savefig(os.path.join(path, names[i] + '.png'))
         plt.close()
-
 
 
 def get_result(path):
@@ -90,6 +77,6 @@ def find_best_from_csv(csv_file):
     return best_epoch, best_val_loss, nb_epochs
 
 
-if __name__ == "__main__":
-    # save_learning_curves('../logs/experiment_3')
-    print(find_best_from_csv('../logs/experiment_2/train_log.csv'))
+# if __name__ == "__main__":
+#     save_learning_curves('../logs/experiment_2')
+#     print(find_best_from_csv('../logs/experiment_2/train_log.csv'))

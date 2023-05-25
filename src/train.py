@@ -74,7 +74,8 @@ def train(config, resume_training=None):
 
     else:
         logging_path = resume_training
-        best_epoch, best_val_loss, epoch_start = find_best_from_csv(os.path.join(logging_path, 'train_log.csv'))
+        best_epoch, best_val_loss, nb_epochs = find_best_from_csv(os.path.join(logging_path, 'train_log.csv'))
+        epoch_start = nb_epochs + 1
 
     ###############################################################
     # Start Training                                              #
