@@ -123,16 +123,16 @@ def train(config):
 
         train_step_logger(logging_path, epoch, train_loss, val_loss, train_metrics, val_metrics)
 
-        if config.checkpoint.save == 'all':
+        if config.model.save_checkpoint == 'all':
             save_checkpoint_all(model, logging_path, epoch)
 
-        elif config.checkpoint.save == 'best':
+        elif config.model.save_checkpoint == 'best':
             best_epoch, best_val_loss = save_checkpoint_best(model, logging_path, epoch, best_epoch, val_loss, best_val_loss)
 
-    if config.checkpoint.save == 'best':
+    if config.model.save_checkpoint == 'best':
         save_checkpoint_best(model, logging_path, epoch, best_epoch, val_loss, best_val_loss, end_training=True)
 
-    elif config.checkpoint.save == 'last':
+    elif config.model.save_checkpoint == 'last':
         save_checkpoint_last(config, model, logging_path)
 
     if config.train.save_learning_curves:

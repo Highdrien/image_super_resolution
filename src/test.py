@@ -35,7 +35,7 @@ def test(logging_path, config):
     model.to(device)
 
     # Load model's weight
-    checkpoint_path = get_checkpoint_path(config, logging_path, mode='test')
+    checkpoint_path = get_checkpoint_path(config, logging_path)
     print("checkpoint path:", checkpoint_path)
     checkpoint = torch.load(checkpoint_path, map_location=device)
     model.load_state_dict(checkpoint)

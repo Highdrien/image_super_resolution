@@ -10,11 +10,12 @@ model:
     optimizer: 'adam'
     learning_rate: 0.001
     data_normalisation: true
+    save_checkpoint: all
 
 # data options
 data:
     path: 'data\patches'
-    image_size: '240,240'
+    image_size: 240
 
 # train options
 train:
@@ -27,7 +28,6 @@ train:
     batch_size: 64
     save_learning_curves: true
     logs_path: 'logs'
-    save_checkpoint: 'all'
     shuffle: true
     drop_last: false
 
@@ -53,5 +53,3 @@ test:
     batch_size: 64
     shuffle: false 
     drop_last: false
-
-    checkpoint: model30pth

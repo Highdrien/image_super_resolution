@@ -6,6 +6,7 @@ from easydict import EasyDict as edict
 from src.dataloader import getbatch
 from src.train import train
 from src.test import test
+from src.predict import predict
 from src.bicubic import test_bicubic
 
 
@@ -43,13 +44,18 @@ def main(options):
         config = load_config(config_path)
         test(options['path'], config)
 
+    elif options['mode'] == 'predict':
+        config_path = os.path.join(options['path'], find_config(options['path']))
+        config = load_config(config_path)
+        predict(options['path'], config)
+
     elif options['mode'] == 'bicubic':
         config = load_config(options['config_path'])
         test_bicubic(config)
 
     else:
         print(options['mode'])
-        print('ERROR: please chose between data, train, test')
+        print('ERROR: please chose between data, train, test, bicubic or predict')
         exit()
 
 

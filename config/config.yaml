@@ -13,20 +13,18 @@ model:
     # activation_function: tanh             # activation function
     # output_activation_function: sigmoid   # output activation function
     data_normalisation: true                # if true, input:image/255 and predict:output*255
+    save_checkpoint: best                    # if you want save the models weight: all, last, best or false
 
 
 # data options
 data:
     path: data\patches
-    image_size: 240,240
+    image_size: 240
 
 
 metrics:
     PSNR: true                          # PeakSignalNoiseRatio
 
-
-checkpoint:
-    save: best                          # if you want save the models weight: all, last, best or false
 
 # train options
 train:

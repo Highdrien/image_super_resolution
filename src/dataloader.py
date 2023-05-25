@@ -81,6 +81,8 @@ class PredictGenerator(Dataset):
         # list of image name
         self.images_name = os.listdir(self.src_path)
 
+        self.size_patches = config.data.image_size
+
     def __len__(self):
         return len(self.images_name)
 
@@ -88,18 +90,54 @@ class PredictGenerator(Dataset):
         """
         get the lr (low resolution) from a image number (index)
         """
-        lr_image = read_image(os.path.join(self.LR_path, self.LR_data[index]))
-        
+        lr_image = read_image(os.path.join(self.src_path, self.images_name[index]))
+        shape = lr_image.shape
+
         if self.normalisation:
             lr_image = lr_image / 255
 
-        return lr_image
+        canal, x, y = lr_image.shape
+
+        # Calculer les dimensions modifiées de l'image
+        x_modifie = x + (self.size_patches - x % self.size_patches) if x % self.size_patches != 0 else x
+        y_modifie = y + (self.size_patches - y % self.size_patches) if y % self.size_patches != 0 else y
+
+        # Créer un tenseur pour l'image modifiée
+        image_modifiee = torch.zeros((canal, x_modifie, y_modifie))
+
+        # Copier les valeurs de l'image d'origine
+        image_modifiee[:, :x, :y] = lr_image
+
+        c, w, h = image_modifiee.shape
+        
+        
+        # Calculate the number of patches in each dimension
+        nb_patches_x = w // self.size_patches
+        nb_patches_y = h // self.size_patches
+        nb_patches = nb_patches_x * nb_patches_y
+
+        # Create torsor to save patches
+        patches = torch.zeros((nb_patches, c, self.size_patches, self.size_patches))
+
+        # Cutting the image into patches
+        idx = 0
+        for i in range(nb_patches_x):
+            for j in range(nb_patches_y):
+                begin_x = i * self.size_patches
+                begin_y = j * self.size_patches
+                fin_x = begin_x + self.size_patches
+                fin_y = begin_y + self.size_patches
+                sous_image = image_modifiee[:, begin_x:fin_x, begin_y:fin_y]
+                patches[idx] = sous_image
+                idx += 1
+
+        return patches, self.images_name[index], shape
 
 
 def create_predict_generator(config):
     """Return the prediction's generator from a config """
     generator = PredictGenerator(config)
     return DataLoader(generator, 
-                      batch_size=config.predict.batch_size, 
+                      batch_size=1, 
                       shuffle=False, 
                       drop_last=False)

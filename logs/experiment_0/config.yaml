@@ -10,6 +10,7 @@ model:
     optimizer: 'adam'
     learning_rate: 0.001
     data_normalisation: true
+    save_checkpoint: all
 
 metrics:
     PSNR: true
@@ -17,7 +18,7 @@ metrics:
 # data options
 data:
     path: 'data\patches'
-    image_size: '120,120'
+    image_size: 120
 
 # train options
 train:
@@ -58,4 +59,9 @@ test:
     shuffle: false 
     drop_last: false
 
-    checkpoint: model30pth
+
+# prediction options
+predict:
+    src_path: data\prediction\src            # path of the images that will be predicted
+    dst_path: data\prediction\dst           # path where the predicted images will be saved
+    end_image_name: _predict 

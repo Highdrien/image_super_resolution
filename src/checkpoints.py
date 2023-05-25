@@ -39,7 +39,7 @@ def save_checkpoint_last(config, model, logging_path):
     torch.save(model.state_dict(), os.path.join(logging_path, 'model' + str(config.train.epochs) + '.pth'))
 
 
-def get_checkpoint_path(config, path, mode):
+def get_checkpoint_path(config, path):
     """
     get a checkpoint file according the config and the experiment_path
     use for test and prediction
@@ -53,21 +53,21 @@ def get_checkpoint_path(config, path, mode):
         model_path = os.path.join(path, 'checkpoint_path')
         print(model_path)
 
-        if config.test.checkpoint in os.listdir(model_path):
+        if config.model.save_checkpoint in os.listdir(model_path):
             return os.path.join(model_path, config.test.checkpoint)
 
-        elif config.test.checkpoint == 'last' or config.test.checkpoint == 'all':
+        elif config.model.save_checkpoint == 'last' or config.model.save_checkpoint == 'all':
             pth_in_checkpoint = list(filter(lambda x: x[-3:] == 'pth', os.listdir(model_path)))
             model_name = 'model' + str(len(pth_in_checkpoint)) + 'pth'
             return os.path.join(model_path, model_name)
 
-        elif 'model' + config.test.checkpoint + 'pth' in os.listdir(model_path):
-            return os.path.join(model_path, 'model' + config.test.checkpoint + 'pth')
+        elif 'model' + config.model.save_checkpoint + 'pth' in os.listdir(model_path):
+            return os.path.join(model_path, 'model' + config.model.save_checkpoint + 'pth')
 
-    elif config.test.checkpoint == 'last':
+    elif config.model.save_checkpoint == 'last':
         return os.path.join(path, pth_in_path[-1])
 
-    elif 'model' + config.test.checkpoint + 'pth' in os.listdir(path):
-        return os.path.join(path, 'model' + config.test.checkpoint + 'pth')
+    elif 'model' + config.model.save_checkpoint + 'pth' in os.listdir(path):
+        return os.path.join(path, 'model' + config.model.save_checkpoint + 'pth')
 
     raise 'The model weights could not be found'
