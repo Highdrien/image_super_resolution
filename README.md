@@ -53,6 +53,7 @@ To run the code you need python (I use python 3.9.13) and packages in the follow
 - PyYAML==6.0
 - matplotlib==3.6.2
 - tqdm==4.64.1
+- torchmetrics==0.11.4
 
 You can run the following code to install all packages in the correct versions:
 ```bash
@@ -73,6 +74,25 @@ python main.py --mode <mode> --config_path <path to your config>
 
 we ran several experiments that you can find in the  `logs` file:
 
-- `experiment_0`: training on few patches (only one patche with size 120*120 per image) to see the result
+## experiment 0
+`experiment_0`: training on few patches (only one patche with size 120*120 per image) to see the result
 
 <p align="center"><img src=logs/experiment_0/MSE.png><p>
+
+After a test, we find:
+
+MSE = 0.003871129684826466\
+PSNR = 24.15203036776014\
+MSSSIM = 0.9391303183926138
+
+## experiment 1
+`experiment_1`: training on all the patches to see the result
+
+<p align="center"><img src=logs/experiment_1/MSE.png><p>
+
+After a test, we find:
+
+MSE = 0.0022520951427679485\
+PSNR = 26.536483545971524\
+MSSSIM = 0.9671353705369743
+
