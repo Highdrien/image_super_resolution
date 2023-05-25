@@ -67,7 +67,7 @@ def save_image(config, prediction, image_name, image_shape):
         os.mkdir(dst_path)
 
     size_patches = config.data.image_size
-    size_overlay = 20
+    size_overlay = config.predict.size_overlay
     upscale_facor = config.upscale_factor
     big_size_patches = size_patches * upscale_facor
     big_size_overlay = size_overlay * upscale_facor

@@ -82,6 +82,7 @@ class PredictGenerator(Dataset):
         self.images_name = os.listdir(self.src_path)
 
         self.size_patches = config.data.image_size
+        self.size_overlay = config.predict.size_overlay
 
     def __len__(self):
         return len(self.images_name)
@@ -92,7 +93,7 @@ class PredictGenerator(Dataset):
         """
         lr_image = read_image(os.path.join(self.src_path, self.images_name[index]))
         shape = lr_image.shape
-        size_overlay = 20
+        size_overlay = self.size_overlay
         size_patches = self.size_patches
         if self.normalisation:
             lr_image = lr_image / 255
