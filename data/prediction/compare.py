@@ -1,8 +1,9 @@
 import os
 import cv2
+from tqdm import tqdm
 import matplotlib.pyplot as plt
 
-def compare_images(image1, image2, image3, zoom_factor, upscale_factor, experiment):
+def compare_images(image1, image2, image3, zoom_factor, upscale_factor, experiment, saving_path):
     # Charger les images
     img1 = cv2.imread(image1)
     img2 = cv2.imread(image2)
@@ -51,27 +52,52 @@ def compare_images(image1, image2, image3, zoom_factor, upscale_factor, experime
     zoomed_img2 = img2[start_row:end_row, start_col:end_col]
     zoomed_img3 = img3[start_row:end_row, start_col:end_col]
 
+    zoom = height / zoom_height_img1
+
     # Afficher le zoom de l'image 1
     axes[1, 0].imshow(cv2.cvtColor(zoomed_img1, cv2.COLOR_BGR2RGB))
-    # axes[1, 0].set_title('Zoom - Image 1')
+    axes[1, 0].set_title("Zoom x{0:.2f}".format(zoom))
 
     # Afficher le zoom de l'image 2
     axes[1, 1].imshow(cv2.cvtColor(zoomed_img2, cv2.COLOR_BGR2RGB))
-    # axes[1, 1].set_title('Zoom - Image 2')
+    axes[1, 1].set_title("Zoom x{0:.2f}".format(zoom))
 
     # Afficher le zoom de l'image 3
     axes[1, 2].imshow(cv2.cvtColor(zoomed_img3, cv2.COLOR_BGR2RGB))
-    # axes[1, 2].set_title('Zoom - Image 3')
+    axes[1, 2].set_title("Zoom x{0:.2f}".format(zoom))
 
     # Masquer les axes
     for ax in axes.flatten():
         ax.axis('off')
 
     plt.tight_layout()
-    plt.show()
+    plt.savefig(saving_path)
 
-# Appel de la fonction pour comparer trois images
-image_path_1 = os.path.join("src", "person_rgb.png")
-image_path_2 = os.path.join("dst", "person_rgb_bicubic4.png")
-image_path_3 = os.path.join("dst", "person_rgb_experiment4.png")
-compare_images(image_path_1, image_path_2, image_path_3, zoom_factor=0.5, upscale_factor=4, experiment=4)
+def main(zoom_factor):
+
+    experiments = [{"number": 1, "upscale_factor": 3}, 
+                   {"number": 2, "upscale_factor": 3}, 
+                   {"number": 3, "upscale_factor": 2},
+                   {"number": 4, "upscale_factor": 4}]
+    
+    images_name = [("person_rgb", ".png"), ("lac", ".jpg")]
+
+    for experiment in tqdm(experiments):
+
+        for name, end in images_name:
+            original_image = os.path.join("src", name + end)
+            bicubic_image = os.path.join("dst", name + "_bicubic" + str(experiment["upscale_factor"]) + end)
+            predicted_image = os.path.join("dst", name +"_experiment" + str(experiment["number"]) + end)
+            saving_path = os.path.join("comparaison", name + "_exp" + str(experiment["number"]) + ".png")
+            compare_images(original_image, 
+                            bicubic_image, 
+                            predicted_image,
+                            zoom_factor=zoom_factor, 
+                            upscale_factor=experiment["upscale_factor"], 
+                            experiment=experiment["number"],
+                            saving_path=saving_path)
+
+main(zoom_factor=0.3)
+        
+
+        
