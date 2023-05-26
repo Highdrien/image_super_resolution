@@ -46,19 +46,6 @@ def save_learning_curves(path):
         plt.grid()
         plt.savefig(os.path.join(path, names[i] + '.png'))
         plt.close()
-    if (len(names)>5):
-        epochs = result[:, 0]
-        mssim = result[:, 5]
-        val_mssim = result[:, 6]
-        plt.plot(epochs, mssim)
-        plt.plot(epochs, val_mssim)
-        plt.title(names[5])
-        plt.xlabel('epoch')
-        plt.ylabel(names[5])
-        plt.legend(names[5:])
-        plt.grid()
-        plt.savefig(os.path.join(path, names[5] + '.png'))
-        plt.close()
 
 
 def get_result(path):
