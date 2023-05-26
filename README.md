@@ -74,7 +74,7 @@ python main.py --mode <mode> --config_path <path to your config>
 
 we ran several experiments that you can find in the  `logs` file:
 
-## experiment 0
+## experiment 0: upscale factor = 3
 `experiment_0`: training on few patches (only one patche with size 120*120 per image) to see the result
 
 <p align="center"><img src=logs/experiment_0/MSE.png><p>
@@ -85,8 +85,8 @@ MSE = 0.003871129684826466\
 PSNR = 24.15203036776014\
 MSSSIM = 0.9391303183926138
 
-## experiment 1
-`experiment_1`: training on all the patches to see the result
+## experiment 1: upscale factor = 3
+`experiment_1`: training on all the patches with 15 epochs (with hidden_channels_1 = 64)
 
 <p align="center"><img src=logs/experiment_1/MSE.png><p>
 
@@ -96,3 +96,45 @@ MSE = 0.0022520951427679485\
 PSNR = 26.536483545971524\
 MSSSIM = 0.9671353705369743
 
+## experiment 2: upscale factor = 3
+`experiment_2`: training on all the patches with 30 epochs (with hidden_channels_1 = 128)
+
+<p align="center"><img src=logs/experiment_2/MSE.png><p>
+
+After a test, we find:
+
+MSE = 0.0019440386436173729\
+PSNR = 27.189252033355128\
+MSSSIM = 0.9738962206111592
+
+## experiment 3: upscale factor = 2
+`experiment_3`: tranfer learning from the experiment 2 to change the upscale factor. There are only 2 epoches because it's was enough. After the test, we find: 
+
+MSE = 0.0012848700122732764\
+PSNR = 28.97259296125667\
+MSSSIM = 0.9879952942489818
+
+## experiment 4: upscale factor = 4
+`experiment_4`: tranfer learning from the experiment 2 to change the upscale factor. There are only 2 epoches because it's was enough. After the test, we find: 
+
+MSE: 0.003155684844919949\
+PSNR: 25.071385717695687\
+MSSSIM: 0.9489965659038276
+
+
+# Comparaison with bicubic
+
+| upscale factor =2 | MSE | PSNR | MSSSIM |
+| :---:   |:-------: | :---:   | :---:   |
+| bicubic | 0.00189 | 28.39 | 0.991 |
+| experiemnt 3| 0.00128 | 28.97 | 0.987 |
+
+| upscale factor = 3 | MSE | PSNR | MSSSIM |
+| :---:   |:-------: | :---:   | :---:   |
+| bicubic | 0.00322 | 25.97 | 0.958 |
+| experiemnt 2| 0.00194 | 27.18 | 0.973 |
+
+| upscale factor = 4 | MSE | PSNR | MSSSIM |
+| :---:   |:-------: | :---:   | :---:   |
+| bicubic | 0.00422 | 24.70 | 0.936 |
+| experiemnt 4| 0.00315 | 25.07 | 0.948 |
