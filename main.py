@@ -7,7 +7,7 @@ from src.dataloader import getbatch
 from src.train import train
 from src.test import test
 from src.predict import predict
-from src.bicubic import test_bicubic
+from src.bicubic import test_bicubic, predict_bicubic
 from src.tranfer_learning import tranfer_learning
 
 
@@ -63,6 +63,10 @@ def main(options):
         previous_config_path = os.path.join(options['path'], find_config(options['path']))
         previous_config = load_config(previous_config_path)
         tranfer_learning(previous_config, options['path'], options['new_upscale_factor'])
+
+    elif options['mode'] == 'predict_bicubic':
+        config = load_config(options['config_path'])
+        predict_bicubic(config)
 
     else:
         print(options['mode'])

@@ -4,6 +4,8 @@ import numpy as np
 
 import torch
 from torch import nn
+from torchvision import transforms
+from torchvision.io import read_image
 
 from src.dataloader import create_generator
 from src.metrics import compute_metrics
@@ -65,3 +67,14 @@ def test_bicubic(config):
 
         test_logger(logging_path, metrics_name, metrics_value, config.upscale_factor)
 
+
+def predict_bicubic(config):
+    for upscale_factor in tqdm(range(2, 5)):
+        for image_name in os.listdir(config.predict.src_path):
+            image = read_image(os.path.join(config.predict.src_path, image_name))
+            image = image.unsqueeze(0)
+            predict = bicubic(image, upscale_factor)
+            image_predicted_name = image_name[:-4] + "_bicubic" + str(upscale_factor) + image_name[-4:]
+
+            image = transforms.ToPILImage()(predict.squeeze(0))
+            image.save(os.path.join(config.predict.dst_path, image_predicted_name))
