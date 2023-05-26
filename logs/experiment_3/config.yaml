@@ -1,6 +1,7 @@
 config_metadata: 'Saving time : 05/26/2023, 11:21:35'
 name: 'experiment'
 upscale_factor: 2
+details: 'transfer learning from weights path: .\logs\experiment_2\model30.pth'
 
 # model options
 model:
