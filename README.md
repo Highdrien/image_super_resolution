@@ -146,14 +146,14 @@ MSSSIM: 0.9489965659038276
 | upscale factor =2 | MSE | PSNR | MSSSIM |
 | :---:   |:-------: | :---:   | :---:   |
 | bicubic | 0.00189 | 28.39 | 0.991 |
-| experiemnt 3| 0.00128 | 28.97 | 0.987 |
+| experiment 3| 0.00128 | 28.97 | 0.987 |
 
 | upscale factor = 3 | MSE | PSNR | MSSSIM |
 | :---:   |:-------: | :---:   | :---:   |
 | bicubic | 0.00322 | 25.97 | 0.958 |
-| experiemnt 2| 0.00194 | 27.18 | 0.973 |
+| experiment 2| 0.00194 | 27.18 | 0.973 |
 
 | upscale factor = 4 | MSE | PSNR | MSSSIM |
 | :---:   |:-------: | :---:   | :---:   |
 | bicubic | 0.00422 | 24.70 | 0.936 |
-| experiemnt 4| 0.00315 | 25.07 | 0.948 |
+| experiment 4| 0.00315 | 25.07 | 0.948 |
