@@ -62,5 +62,5 @@ test:
 predict:
     src_path: 'data\prediction\src'
     dst_path: 'data\prediction\dst'
-    end_image_name: '_experiment2'
+    end_image_name: '_experiment1'
     size_overlay: 20

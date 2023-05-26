@@ -72,7 +72,7 @@ test:
 
 # prediction options
 predict:
-    src_path: data\precition\src            # path of the images that will be predicted
+    src_path: data\prediction\src            # path of the images that will be predicted
     dst_path: data\prediction\dst           # path where the predicted images will be saved
     end_image_name: _predict                # end of the image name: example, the prediction of image3.png will be image3<end_image_name>.png
     size_overlay: 20

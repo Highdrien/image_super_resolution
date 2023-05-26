@@ -62,7 +62,7 @@ test:
 
 # predict options
 predict:
-    src_path: 'data\precition\src'
+    src_path: 'data\prediction\src'
     dst_path: 'data\prediction\dst'
-    end_image_name: '_predict'
+    end_image_name: '_experiment3'
     size_overlay: 20
