@@ -48,7 +48,7 @@ def train(config, resume_training=None):
 
     # Loss
     if config.model.loss.lower() == 'mse':
-        print('optimizer: mse')
+        print('Loss: mse')
         criterion = torch.nn.MSELoss()
     else:
         raise 'MSE loss is the only one to be implemented'

@@ -1,14 +1,12 @@
-import os
 import numpy as np
 from tqdm import tqdm
 
 import torch
 import torch.nn as nn
-import torch.optim as optim
 
 from src.model import get_model
 from src.metrics import compute_metrics
-from src.utils import save_learning_curves, find_best_from_csv
+from src.utils import save_learning_curves
 from src.dataloader import create_generator
 from src.checkpoints import save_checkpoint_all, save_checkpoint_best, save_checkpoint_last, get_checkpoint_path
 
@@ -39,13 +37,13 @@ def tranfer_learning(previous_config, previous_path,  new_upscale_factor):
     model.load_state_dict(torch.load(checkpoint_path, map_location=device))
     print("pretrained checkpoint path:", checkpoint_path)
 
-    # Geler les couches précédentes
+    # Freeze first and second layers
     for param in model.conv1.parameters():
         param.requires_grad_(False)
     for param in model.conv2.parameters():
         param.requires_grad_(False)
 
-    # Réinitialiser les poids de conv3 pour correspondre à la nouvelle valeur de upscale_factor
+    # Reset the weights of conv3 to match the new value of upscale_factor
     new_channels = 3 * (new_upscale_factor ** 2)
     model.conv3 = nn.Conv2d(previous_config.model.hidden_channels_2, new_channels, kernel_size=3, stride=1, padding='same')
     model.pixel_shuffle = nn.PixelShuffle(new_upscale_factor)
@@ -53,6 +51,7 @@ def tranfer_learning(previous_config, previous_path,  new_upscale_factor):
     # Get the new config
     config = previous_config
     config.upscale_factor = new_upscale_factor
+    config.details = "transfer learning from weight's path: " + checkpoint_path
 
     # Get generators
     train_generator = create_generator(config, mode='train')
@@ -60,7 +59,7 @@ def tranfer_learning(previous_config, previous_path,  new_upscale_factor):
 
     # Loss
     if config.model.loss.lower() == 'mse':
-        print('optimizer: mse')
+        print('Loss: mse')
         criterion = torch.nn.MSELoss()
     else:
         raise 'MSE loss is the only one to be implemented'
