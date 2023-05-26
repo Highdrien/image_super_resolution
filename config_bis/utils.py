@@ -31,7 +31,10 @@ def train_logger(config):
     with open(os.path.join(path, 'train_log.csv'), 'w') as f:
         first_line = 'step,' + config.model.loss + ',val ' + config.model.loss
         for metric in list(filter(lambda x: config.metrics[x], config.metrics)):
+            
             first_line += ',' + metric
+            if metric == "PSNR":
+                first_line += ' (dB)'
             first_line += ',val ' + metric
         f.write(first_line + '\n')
     f.close()
