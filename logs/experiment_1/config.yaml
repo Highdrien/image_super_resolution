@@ -1,4 +1,4 @@
-config_metadata: 'Saving time : 05/11/2023, 18:47:03'
+config_metadata: 'Saving time : 05/25/2023, 13:13:15'
 name: 'experiment'
 upscale_factor: 3
 
@@ -10,12 +10,17 @@ model:
     optimizer: 'adam'
     learning_rate: 0.001
     data_normalisation: true
-    save_checkpoint: all
+    save_checkpoint: 'best'
 
 # data options
 data:
     path: 'data\patches'
     image_size: 240
+
+# metrics options
+metrics:
+    PSNR: true
+    MSSSIM: true
 
 # train options
 train:
@@ -24,7 +29,7 @@ train:
         X2: 'DIV2K_train_LR_bicubic\X2'
         X3: 'DIV2K_train_LR_bicubic\X3'
         X4: 'DIV2K_train_LR_bicubic\X4'
-    epochs: 30
+    epochs: 15
     batch_size: 64
     save_learning_curves: true
     logs_path: 'logs'
@@ -45,11 +50,17 @@ val:
 # test options
 test:
     path:
-        HR: DIV2K_test_HR
-        X2: DIV2K_test_LR_bicubic\X2
-        X3: DIV2K_test_LR_bicubic\X3
-        X4: DIV2K_test_LR_bicubic\X4
-
+        HR: 'DIV2K_test_HR'
+        X2: 'DIV2K_test_LR_bicubic\X2'
+        X3: 'DIV2K_test_LR_bicubic\X3'
+        X4: 'DIV2K_test_LR_bicubic\X4'
     batch_size: 64
-    shuffle: false 
+    shuffle: false
     drop_last: false
+
+# predict options
+predict:
+    src_path: 'data\prediction\src'
+    dst_path: 'data\prediction\dst'
+    end_image_name: '_experiment2'
+    size_overlay: 20
