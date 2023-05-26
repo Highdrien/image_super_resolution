@@ -3,6 +3,25 @@
 # Description
 Super resolution from a single low-resolution image has always been an ill posed problem. The current state of the art consists in training a convolutional neural network with a large dataset of natural looking images. Corresponding low-resolution images are computed and fed as an input to the neural network. The learned feature maps have shown to produce less artifacts than classical methods.
 
+# Table of Contents
+- [Image Super Resolution](#image-super-resolution)
+- [Description](#description)
+- [Table of Contents](#table-of-contents)
+- [Objectives](#objectives)
+- [Data](#data)
+  - [the dataset](#the-dataset)
+  - [The data is then arranged as follows:](#the-data-is-then-arranged-as-follows)
+- [Requirements](#requirements)
+- [Run the code](#run-the-code)
+- [Results](#results)
+  - [experiment 0: upscale factor = 3](#experiment-0-upscale-factor--3)
+  - [experiment 1: upscale factor = 3](#experiment-1-upscale-factor--3)
+  - [experiment 2: upscale factor = 3](#experiment-2-upscale-factor--3)
+  - [experiment 3: upscale factor = 2](#experiment-3-upscale-factor--2)
+  - [experiment 4: upscale factor = 4](#experiment-4-upscale-factor--4)
+- [Comparaison with bicubic](#comparaison-with-bicubic)
+
+
 # Objectives
 The first step in this project is to retrieve the dataset. We suggest using the [DIVerse 2K resolution high quality images](https://data.vision.ee.ethz.ch/cvl/DIV2K/) which provides both high- and low-resolution images. The most interesting aspect of this project is the method to upscale the number of pixels in a given layer of your network. A very powerful approach is to interleave pixels of separate feature maps in a so-called sub-pixel convolution. Other works work on a bicubic interpolation of the low-resolution image to avoid this, or use sparse-coding to map low-resolution patches to high-resolution ones. After training, compute the PSNR of the reconstructed image on a validation dataset. The deliverables of this project are: 
 - a brief description of the literature ; 
