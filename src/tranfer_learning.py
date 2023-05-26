@@ -51,7 +51,7 @@ def tranfer_learning(previous_config, previous_path,  new_upscale_factor):
     # Get the new config
     config = previous_config
     config.upscale_factor = new_upscale_factor
-    config.details = "transfer learning from weight's path: " + checkpoint_path
+    config.details = "transfer learning from weights path: " + checkpoint_path
 
     # Get generators
     train_generator = create_generator(config, mode='train')
