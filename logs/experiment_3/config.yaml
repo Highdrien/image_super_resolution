@@ -1,0 +1,67 @@
+config_metadata: 'Saving time : 05/26/2023, 11:21:35'
+name: 'experiment'
+upscale_factor: 2
+
+# model options
+model:
+    hidden_channels_1: 128
+    hidden_channels_2: 64
+    dropout: 0
+    loss: 'MSE'
+    optimizer: 'adam'
+    learning_rate: 0.001
+    data_normalisation: true
+    save_checkpoint: 'best'
+
+# data options
+data:
+    path: 'data\patches'
+    image_size: 240
+
+# metrics options
+metrics:
+    PSNR: true
+    MSSSIM: true
+
+# train options
+train:
+    path:
+        HR: 'DIV2K_train_HR'
+        X2: 'DIV2K_train_LR_bicubic\X2'
+        X3: 'DIV2K_train_LR_bicubic\X3'
+        X4: 'DIV2K_train_LR_bicubic\X4'
+    epochs: 30
+    batch_size: 64
+    save_learning_curves: true
+    logs_path: 'logs'
+    shuffle: true
+    drop_last: false
+
+# val options
+val:
+    path:
+        HR: 'DIV2K_valid_HR'
+        X2: 'DIV2K_valid_LR_bicubic\X2'
+        X3: 'DIV2K_valid_LR_bicubic\X3'
+        X4: 'DIV2K_valid_LR_bicubic\X4'
+    batch_size: 64
+    shuffle: true
+    drop_last: false
+
+# test options
+test:
+    path:
+        HR: 'DIV2K_test_HR'
+        X2: 'DIV2K_test_LR_bicubic\X2'
+        X3: 'DIV2K_test_LR_bicubic\X3'
+        X4: 'DIV2K_test_LR_bicubic\X4'
+    batch_size: 64
+    shuffle: false
+    drop_last: false
+
+# predict options
+predict:
+    src_path: 'data\precition\src'
+    dst_path: 'data\prediction\dst'
+    end_image_name: '_predict'
+    size_overlay: 20
