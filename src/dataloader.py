@@ -106,47 +106,31 @@ class PredictGenerator(Dataset):
         nb_patches = nb_patches_x * nb_patches_y
 
         # Calculate the modified image dimensions
-        # x_modifie = x + (self.size_patches - x % self.size_patches) if x % self.size_patches != 0 else x
-        # y_modifie = y + (self.size_patches - y % self.size_patches) if y % self.size_patches != 0 else y
-        x_modifie = size_patches+(size_patches-size_overlay)*(nb_patches_x-1)
-        y_modifie = size_patches+(size_patches-size_overlay)*(nb_patches_y-1)
+        x_modified = size_patches+(size_patches-size_overlay)*(nb_patches_x-1)
+        y_modified = size_patches+(size_patches-size_overlay)*(nb_patches_y-1)
         
         # Create the tensor for the modified image
-        image_modifiee = torch.zeros((canal, x_modifie, y_modifie))
+        image_modified = torch.zeros((canal, x_modified, y_modified))
 
         # Copy the original image in the modified image
-        image_modifiee[:, :x, :y] = lr_image
+        image_modified[:, :x, :y] = lr_image
 
-        c, w, h = image_modifiee.shape
-
-        # nb_patches_x = w // self.size_patches
-        # nb_patches_y = h // self.size_patches
-
-
+        c, _, _ = image_modified.shape
 
         # Create torsor to save patches
         patches = torch.zeros((nb_patches, c, self.size_patches, self.size_patches))
 
         # Cutting the image into patches
-        # idx = 0
         for i in range(nb_patches_x):
             for j in range(nb_patches_y):                
-                # begin_x = i * self.size_patches
-                # begin_y = j * self.size_patches
-                # fin_x = begin_x + self.size_patches #begin in english and fin in french XD
-                # fin_y = begin_y + self.size_patches
-                # sous_image = image_modifiee[:, begin_x:fin_x, begin_y:fin_y]
-                # patches[idx] = sous_image
-                # idx += 1
                 idx = i*nb_patches_y+j
                 begin_x=i*(size_patches-size_overlay)
                 begin_y=j*(size_patches-size_overlay)
                 end_x=begin_x+size_patches
                 end_y=begin_y+size_patches
-                sous_image=image_modifiee[:, begin_x:end_x, begin_y:end_y]
+                sous_image=image_modified[:, begin_x:end_x, begin_y:end_y]
                 patches[idx] = sous_image    
                 
-
         return patches, self.images_name[index], shape
 
 
