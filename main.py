@@ -64,8 +64,14 @@ def main(options):
         predict_bicubic(config)
 
     else:
-        print(options['mode'])
-        print('ERROR: please chose between data, train, test, bicubic, predict or resumetrain')
+        print('ERROR: mode incorect. You chose: ' + options['mode'] + '. Please chose a mode between:')
+        print('- train')
+        print('- resumetrain')
+        print('- tf or transfer_learning')
+        print('- test')
+        print('- predict')
+        print('- bicubic')
+        print('- predict_bicubic')
         exit()
 
 
