@@ -3,7 +3,6 @@ import yaml
 import argparse
 from easydict import EasyDict as edict
 
-from src.dataloader import getbatch
 from src.train import train
 from src.test import test
 from src.predict import predict
@@ -32,11 +31,7 @@ def find_config(experiment_path):
 
 
 def main(options):
-    if options['mode'] == 'data':
-        config = load_config(options['config_path'])
-        getbatch(config, 'train')
-
-    elif options['mode'] == 'train':
+    if options['mode'] == 'train':
         config = load_config(options['config_path'])
         train(config)
     
@@ -78,7 +73,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     # Options
-    parser.add_argument('--mode', default=None, type=str, help="choose a mode between 'data', 'train', 'test', 'predict', 'bicubic' and 'resumetrain'")
+    parser.add_argument('--mode', default=None, type=str, help="choose a mode between 'train', 'test', 'predict', 'bicubic' and 'resumetrain'")
     parser.add_argument('--config_path', default=os.path.join('config', 'config.yaml'), type=str, help="path to config (for training)")
     parser.add_argument('--path', type=str, help="experiment path (for test, prediction or resume previous training)")
     parser.add_argument('--new_upscale_factor', type=int, help="new upscale factor for a tranfere learning")
