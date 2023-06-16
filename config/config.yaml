@@ -6,20 +6,17 @@ upscale_factor: 3                           # upscale_factor can be 2, 3 or 4
 model:
     hidden_channels_1: 64                   # number of filters in output of the frist Conv2d layer 
     hidden_channels_2: 32                   # number of filters in output of the second Conv2d layer
-    # dropout: 0                            # dropout probability
     loss: MSE                               # loss function
     optimizer: adam                         # optimizer function
     learning_rate: 0.001                    # learning rate
-    # activation_function: tanh             # activation function
-    # output_activation_function: sigmoid   # output activation function
     data_normalisation: true                # if true, input:image/255 and predict:output*255
     save_checkpoint: best                    # if you want save the models weight: all, last, best or false
 
 
 # data options
 data:
-    path: data\patches
-    image_size: 240
+    path: data\patches                  # data path
+    image_size: 240                     # image shape: (240, 240, 3)
 
 
 metrics:
@@ -75,4 +72,4 @@ predict:
     src_path: data\prediction\src            # path of the images that will be predicted
     dst_path: data\prediction\dst           # path where the predicted images will be saved
     end_image_name: _predict                # end of the image name: example, the prediction of image3.png will be image3<end_image_name>.png
-    size_overlay: 20
+    size_overlay: 20                        # number of pixel on the overlapping 

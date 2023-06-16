@@ -20,7 +20,7 @@ def test(logging_path, config):
     :param logging_path: path of the experiment folder, containing the config, and the model weights
     :param config: configuration of the model
     """
-    test_generator = create_generator(config, mode='train')
+    test_generator = create_generator(config, mode='test')
 
     # Use gpu or cpu
     if torch.cuda.is_available():

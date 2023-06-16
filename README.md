@@ -75,7 +75,7 @@ In the `data` folder, you will find all the images used in the training. It cont
 
 # Requirements
 
-To run the code you need python (I use python 3.9.13) and packages in the following versions :
+To run the code you need python (We use python 3.9.13) and packages in the following versions :
 
 - torch==2.0.0
 - numpy==1.23.0
